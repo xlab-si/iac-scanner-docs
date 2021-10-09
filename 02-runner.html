@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IaC Scan Runner &mdash; IaC Scanner  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/xlab-favicon-16x16.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/tabs.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IaC Scanner SaaS" href="03-saas.html" />
+    <link rel="prev" title="Introduction" href="01-intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> IaC Scanner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01-intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IaC Scan Runner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rest-api">REST API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#scanner-and-check-reference">Scanner and check reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ansible-lint">Ansible Lint</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iac-scan-runner-cli-installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cli-commands">CLI commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#openapi">openapi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install">install</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03-saas.html">IaC Scanner SaaS</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IaC Scanner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>IaC Scan Runner</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/02-runner.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="iac-scan-runner">
+<span id="id1"></span><h1>IaC Scan Runner<a class="headerlink" href="#iac-scan-runner" title="Permalink to this headline"></a></h1>
+<p>The <strong>IaC Scan Runner</strong> is a REST API service used to scan IaC (Infrastructure as Code) package by performing various
+checks in order to find possible errors and improvements.
+The IaC Scan Runner’s source code is available in <a class="reference external" href="https://github.com/xlab-si/iac-scan-runner">xlab-si/iac-scan-runner</a> GitHub repository.</p>
+<div class="section" id="rest-api">
+<span id="iac-scan-runner-rest-api"></span><h2>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline"></a></h2>
+<p>This section focuses on the <strong>IaC Scan Runner REST API</strong> service.</p>
+<div class="section" id="installation">
+<span id="iac-scan-runner-rest-api-installation"></span><h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h3>
+<p>You can run the REST API using a public <a class="reference external" href="https://hub.docker.com/r/xscanner/runner">xscanner/runner</a> Docker image as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># run IaC Scan Runner REST API in a Docker container and</span>
+<span class="c1"># navigate to localhost:8080/swagger or localhost:8080/redoc</span>
+docker run --name iac-scan-runner -p <span class="m">8080</span>:80 xscanner/runner
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Other methods of running are also explained in <a class="reference external" href="https://github.com/xlab-si/iac-scan-runner">xlab-si/iac-scan-runner</a> GitHub repository.</p>
+</div>
+</div>
+<div class="section" id="usage">
+<span id="iac-scan-runner-rest-api-usage"></span><h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h3>
+<p>After the setup you will see that the <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a> and interactive <a class="reference external" href="https://swagger.io/tools/swagger-ui/">Swagger UI</a> API documentation are
+available on <code class="docutils literal notranslate"><span class="pre">/swagger</span></code>, whereas <a class="reference external" href="https://redoc.ly/redoc/">ReDoc</a> generated API reference documentation is accessible on <code class="docutils literal notranslate"><span class="pre">/redoc</span></code>.
+You can also retrieve an OpenAPI document that conforms to the <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a> as JSON file on
+<code class="docutils literal notranslate"><span class="pre">/openapi.json</span></code> or as YAML file on <code class="docutils literal notranslate"><span class="pre">/openapi.yaml</span></code> (or <code class="docutils literal notranslate"><span class="pre">/openapi.yml</span></code>).</p>
+<p>The IaC Scan Runner API can be used to interact with the main IaC inspection component and initialize IaC scans.
+The API includes various IaC checks that can be filtered and configured.
+User can choose to execute all or just the selected checks as a part of one IaC scan.
+After the scanning process the API will return all the check results.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>REST API endpoint</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#checks">/checks</a></p></td>
+<td><p>Retrieve and filter checks</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scan">/scan</a></p></td>
+<td><p>Initiate IaC scan</p></td>
+</tr>
+</tbody>
+</table>
+<p>The API endpoints are further described below.</p>
+<hr class="docutils" />
+<span class="target" id="checks"></span><dl class="http get">
+<dt class="sig sig-object http" id="get--checks">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/checks</span></span><a class="headerlink" href="#get--checks" title="Permalink to this definition"></a></dt>
+<dd><p>This endpoint lets you retrieve and filter the supported IaC checks.
+You can filter checks by their keynames (use the <em>keyword</em> request parameter) and find out whether they are already
+enabled (set the <em>enabled</em> parameter) or configured (set the <em>configured</em> parameter).
+Checks can also be filtered by their target entity (set the <em>target_entity_type</em> parameter) - here we have three
+types of checks - IaC (they only check the code), component (they check IaC requirements and dependencies in order
+to find vulnerabilities) and check that are both IaC and component.
+Each IaC check in the API has its unique name so that it can be distinguished from other checks.
+When no filter is specified, the endpoint lists all IaC checks.</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;GET&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks?keyword=Terraform&amp;enabled=true&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks?keyword=Terraform&amp;enabled=true&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;tflint&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A Pluggable Terraform Linter&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;configured&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span> <span class="s2">&quot;IaC&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;tfsec&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Security scanner for your Terraform code&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;configured&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span> <span class="s2">&quot;IaC&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;terrascan&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Terrascan is a static code analyzer for IaC (defaults to scanning Terraform)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;configured&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span> <span class="s2">&quot;IaC&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword</strong> (<em>string</em>) – optional keyword from check name or description</p></li>
+<li><p><strong>enabled</strong> (<em>boolean</em>) – search for checks that are enabled or not</p></li>
+<li><p><strong>configured</strong> (<em>string</em>) – search for checks that are configured or not</p></li>
+<li><p><strong>target_entity_type</strong> (<em>string</em>) – search by target entity (one of <code class="docutils literal notranslate"><span class="pre">IaC</span></code>, <code class="docutils literal notranslate"><span class="pre">component</span></code>, <code class="docutils literal notranslate"><span class="pre">IaC</span> <span class="pre">and</span> <span class="pre">component</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="scan"></span><dl class="http post">
+<dt class="sig sig-object http" id="post--scan">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/scan</span></span><a class="headerlink" href="#post--scan" title="Permalink to this definition"></a></dt>
+<dd><p>This is the main endpoint that is used to scan the IaC and gather the results from the executed IaC checks.
+The request body is treated as <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> (<em>multipart/form-data</em> type) and has two parameters.
+The first one is <em>iac</em> and is required.
+Here, the user passes his (compressed) IaC package (currently limited to <em>zip</em> or <em>tar</em>).
+The second parameter is <em>checks</em> and is an optional array of checks, which the user wants to executed as a part of
+his IaC scan.
+The IaC checks are selected by their unique names. If the user does not specify that field, all the enabled checks
+are executed.
+The API will warn you if there are any nonexistent, disabled or un-configured checks that you wanted to use.
+After the scanning process the API will return results of all checks (their outputs and return codes).</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;POST&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/scan&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;iac=@scaling-example.zip&#39;</span> -F <span class="s1">&#39;checks=bandit,ansible-lint&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/scan&#39;</span>
+<span class="n">multipart_form_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;iac&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;scaling-example.zip&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/scaling-example.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
+    <span class="s1">&#39;checks&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;bandit,ansible-lint&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;bandit&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None\n[main]\tINFO\trunning on Python 3.8.10\nRun started:2021-08-25 11:23:29.960356\n\nTest results:\n\tNo issues identified.\n\nCode scanned:\n\tTotal lines of code: 0\n\tTotal lines skipped (#nosec): 0\n\nRun metrics:\n\tTotal issues (by severity):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\n\tTotal issues (by confidence):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\nFiles skipped (0):\n&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;rc&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ansible-lint&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;WARNING  Listing 6 violation(s) that are fatal\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:45: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:62: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\nYou can skip specific rules or tags by adding them to your configuration file:\n\u001b[2m# .ansible-lint\u001b[0m\n\u001b[94mwarn_list\u001b[0m:  \u001b[2m# or &#39;skip_list&#39; to silence them completely\u001b[0m\n  - yaml  \u001b[2m# Violations reported by yamllint\u001b[0m\n\nFinished with \u001b[1;36m6\u001b[0m \u001b[1;35mfailure\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m, \u001b[1;36m0\u001b[0m \u001b[1;35mwarning\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m on \u001b[1;36m9\u001b[0m files.\n&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;rc&quot;</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Form Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iac</strong> – IaC file (currently limited to <em>zip</em> or <em>tar</em>)</p></li>
+<li><p><strong>checks</strong> – optional array of the selected checks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All API endpoints try to use JSON responses.</p>
+</div>
+</div>
+</div>
+<div class="section" id="scanner-and-check-reference">
+<span id="iac-scanner-and-check-reference"></span><h2>Scanner and check reference<a class="headerlink" href="#scanner-and-check-reference" title="Permalink to this headline"></a></h2>
+<p>The scanner is the main component of the IaC Scan Runner and it initiates the scanning process, which makes the
+supplied IaC go through multiple checks.</p>
+<p>IaC Scan Runner currently supports the following <em>IaC checks</em> that can be executed as part of one <em>IaC scan</em>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>CLI command</p></th>
+<th class="head"><p>Target IaC entity</p></th>
+<th class="head"><p>Enabled (by default)</p></th>
+<th class="head"><p>Needs configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansible-lint">Ansible Lint</a></p></td>
+<td><p>Ansible</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+</tbody>
+</table>
+<p>The following subsections explain the necessary API actions for each check.</p>
+<hr class="docutils" />
+<div class="section" id="ansible-lint">
+<span id="id2"></span><h3>Ansible Lint<a class="headerlink" href="#ansible-lint" title="Permalink to this headline"></a></h3>
+<p><strong>Ansible Lint</strong> is a command-line tool for linting playbooks, roles and collections aimed towards any Ansible users
+(see <a class="reference external" href="https://github.com/willthames/ansible-lint/">Ansible Lint check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ansible-lint</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://ansible-lint.readthedocs.io/en/latest/">Ansible Lint docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a href="#id5"><span class="problematic" id="id6">`/checks/{check_name}/configure`_</span></a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional YAML configuration file (see <a class="reference external" href="https://ansible-lint.readthedocs.io/en/latest/configuring.html">Ansible Lint config</a>).
+You can also skip this configuration and put your local configuration file called <code class="docutils literal notranslate"><span class="pre">.ansible-lint</span></code> to the root
+of your IaC package.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="cli">
+<span id="iac-scan-runner-cli"></span><h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
+<p>The <strong>IaC Scan Runner CLI</strong> enables easier setup of IaC Scanner in console environments.</p>
+<div class="section" id="prerequisites">
+<span id="iac-scan-runner-cli-prerequisites"></span><h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
+<p>The <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">Scan Runner CLI</a> requires Python 3 and a virtual environment.
+In a typical modern Linux environment, we should already be set.
+In Ubuntu, however, we might need to run the following commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt update
+<span class="gp">$ </span>sudo apt install -y python3-venv python3-wheel python-wheel-common
+</pre></div>
+</div>
+</div>
+<div class="section" id="iac-scan-runner-cli-installation">
+<span id="id3"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
+The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner
+<span class="gp">$ </span>python3 -m venv .venv <span class="o">&amp;&amp;</span> . .venv/bin/activate
+<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip install --upgrade pip
+<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip install iac-scan-runner
+</pre></div>
+</div>
+<p>The development version of the package is available on <a class="reference external" href="https://test.pypi.org/project/iac-scan-runner/">TestPyPI</a> and the installation goes as follows.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ iac-scan-runner
+</pre></div>
+</div>
+</div>
+<div class="section" id="cli-commands">
+<span id="iac-scan-runner-cli-commands"></span><h3>CLI commands<a class="headerlink" href="#cli-commands" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> it currently allows users to execute the following shell commands:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 62%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>CLI command</p></th>
+<th class="head"><p>Purpose and description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#iac-scan-runner-openapi">iac-scan-runner openapi</a></p></td>
+<td><p>print <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#iac-scan-runner-install">iac-scan-runner install</a></p></td>
+<td><p>install the IaC Scan Runner prerequisites</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#iac-scan-runner-run">iac-scan-runner run</a></p></td>
+<td><p>run the IaC Scan Runner REST API</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>All the CLI commands are equipped with <code class="docutils literal notranslate"><span class="pre">-h/--help</span></code> option to help you.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="openapi">
+<span id="iac-scan-runner-openapi"></span><h4>openapi<a class="headerlink" href="#openapi" title="Permalink to this headline"></a></h4>
+<hr class="docutils" />
+</div>
+<div class="section" id="install">
+<span id="iac-scan-runner-install"></span><h4>install<a class="headerlink" href="#install" title="Permalink to this headline"></a></h4>
+<hr class="docutils" />
+</div>
+<div class="section" id="run">
+<span id="iac-scan-runner-run"></span><h4>run<a class="headerlink" href="#run" title="Permalink to this headline"></a></h4>
+<hr class="docutils" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="01-intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="03-saas.html" class="btn btn-neutral float-right" title="IaC Scanner SaaS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, XLAB d.o.o., xOpera team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
