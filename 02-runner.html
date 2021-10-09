@@ -61,7 +61,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#iac-scan-runner-cli-installation">Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#iac-scan-runner">iac-scan-runner</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -533,6 +536,78 @@ The simplest way to test <code class="docutils literal notranslate"><span class=
 <p>All the CLI commands are equipped with <code class="docutils literal notranslate"><span class="pre">-h/--help</span></code> option to help you.</p>
 </div>
 <hr class="docutils" />
+<div class="section" id="iac-scan-runner">
+<h4>iac-scan-runner<a class="headerlink" href="#iac-scan-runner" title="Permalink to this headline"></a></h4>
+<p>IaC Scan Runner CLI</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-install-completion">
+<span class="sig-name descname"><span class="pre">--install-completion</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;install_completion&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-install-completion" title="Permalink to this definition"></a></dt>
+<dd><p>Install completion for the specified shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>bash | zsh | fish | powershell | pwsh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-show-completion">
+<span class="sig-name descname"><span class="pre">--show-completion</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;show_completion&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-show-completion" title="Permalink to this definition"></a></dt>
+<dd><p>Show completion for the specified shell, to copy it or customize the installation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>bash | zsh | fish | powershell | pwsh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="iac-scan-runner-install">
+<h5>install<a class="headerlink" href="#iac-scan-runner-install" title="Permalink to this headline"></a></h5>
+<p>Install prerequisites for IaC Scan Runner</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner install <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="iac-scan-runner-openapi">
+<h5>openapi<a class="headerlink" href="#iac-scan-runner-openapi" title="Permalink to this headline"></a></h5>
+<p>Get OpenAPI specification</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner openapi <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-openapi-f">
+<span id="cmdoption-iac-scan-runner-openapi-format"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--format</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_format&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-openapi-f" title="Permalink to this definition"></a></dt>
+<dd><p>OpenAPI output format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>OpenApiFormat.json</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>json | yaml</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-openapi-o">
+<span id="cmdoption-iac-scan-runner-openapi-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-openapi-o" title="Permalink to this definition"></a></dt>
+<dd><p>Output file path</p>
+</dd></dl>
+
+</div>
+<div class="section" id="iac-scan-runner-run">
+<h5>run<a class="headerlink" href="#iac-scan-runner-run" title="Permalink to this headline"></a></h5>
+<p>Run REST API for IaC Scan Runner</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner run <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
 <hr class="docutils" />
 </div>
 </div>
