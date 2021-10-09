@@ -197,6 +197,12 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +===============================+============================+============================+============================+
 | `Ansible Lint`_               | Ansible                    | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `TFLint`_                     | Terraform                  | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `tfsec`_                      | Terraform                  | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Terrascan`_                  | Terraform                  | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
 
@@ -234,6 +240,96 @@ Ansible Lint
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _TFLint:
+
+TFLint
+######
+
+**TFLint** is a a pluggable Terraform linter.
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``tflint``                      |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `TFLint docs`_                  |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional HCL configuration file (see `TFLint config`_).
+        You can also skip this configuration and put the TFLint config file named ``.tflint.hcl`` to the root of your
+        IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _tfsec:
+
+tfsec
+#####
+
+**tfsec** is a security scanner for your Terraform code (see `tfsec check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``tfsec``                       |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `tfsec docs`_                   |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional JSON or YAML configuration file (see `tfsec config`_).
+        You can also skip this configuration and put the tfsec config in the ``.tfsec`` folder in the IaC root and name
+        it ``config.json`` or ``config.yml`` and it will be automatically loaded and used.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _Terrascan:
+
+Terrascan
+#########
+
+**Terrascan** is a static code analyzer for IaC and defaults to scanning Terraform (see `Terrascan check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``terrascan``                   |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Terrascan docs`_               |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional TOML configuration file (see `Terrascan config`_).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
 
 .. _IaC Scan Runner CLI:
 
@@ -347,6 +443,15 @@ run
 .. _Ansible Lint check: https://github.com/willthames/ansible-lint/
 .. _Ansible Lint docs: https://ansible-lint.readthedocs.io/en/latest/
 .. _Ansible Lint config: https://ansible-lint.readthedocs.io/en/latest/configuring.html
+.. _TFLint check: https://github.com/terraform-linters/tflint/
+.. _TFLint docs: https://github.com/terraform-linters/tflint/tree/master/docs/user-guide
+.. _TFLint config: https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/config.md
+.. _tfsec check: https://github.com/aquasecurity/tfsec/
+.. _tfsec docs: https://tfsec.dev/docs/installation/
+.. _tfsec config: https://tfsec.dev/docs/config/
+.. _Terrascan check: https://github.com/accurics/terrascan/
+.. _Terrascan docs: https://docs.accurics.com/projects/accurics-terrascan/en/latest/
+.. _Terrascan config: https://docs.accurics.com/projects/accurics-terrascan/en/latest/usage/config_options/
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/

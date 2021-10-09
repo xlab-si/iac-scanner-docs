@@ -50,6 +50,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scanner-and-check-reference">Scanner and check reference</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ansible-lint">Ansible Lint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tflint">TFLint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tfsec">tfsec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#terrascan">Terrascan</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
@@ -303,6 +306,21 @@ supplied IaC go through multiple checks.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tflint">TFLint</a></p></td>
+<td><p>Terraform</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tfsec">tfsec</a></p></td>
+<td><p>Terraform</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#terrascan">Terrascan</a></p></td>
+<td><p>Terraform</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
 </tbody>
 </table>
 <p>The following subsections explain the necessary API actions for each check.</p>
@@ -332,12 +350,124 @@ supplied IaC go through multiple checks.</p>
 </tbody>
 </table>
 <div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
-<p class="admonition-title">Configuration options for <a href="#id5"><span class="problematic" id="id6">`/checks/{check_name}/configure`_</span></a> API endpoint</p>
+<p class="admonition-title">Configuration options for <a href="#id8"><span class="problematic" id="id9">`/checks/{check_name}/configure`_</span></a> API endpoint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Config file</dt>
 <dd class="field-odd"><p>Accepts an optional YAML configuration file (see <a class="reference external" href="https://ansible-lint.readthedocs.io/en/latest/configuring.html">Ansible Lint config</a>).
 You can also skip this configuration and put your local configuration file called <code class="docutils literal notranslate"><span class="pre">.ansible-lint</span></code> to the root
 of your IaC package.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="tflint">
+<span id="id3"></span><h3>TFLint<a class="headerlink" href="#tflint" title="Permalink to this headline"></a></h3>
+<p><strong>TFLint</strong> is a a pluggable Terraform linter.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tflint</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/terraform-linters/tflint/tree/master/docs/user-guide">TFLint docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a href="#id10"><span class="problematic" id="id11">`/checks/{check_name}/configure`_</span></a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional HCL configuration file (see <a class="reference external" href="https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/config.md">TFLint config</a>).
+You can also skip this configuration and put the TFLint config file named <code class="docutils literal notranslate"><span class="pre">.tflint.hcl</span></code> to the root of your
+IaC package.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="tfsec">
+<span id="id4"></span><h3>tfsec<a class="headerlink" href="#tfsec" title="Permalink to this headline"></a></h3>
+<p><strong>tfsec</strong> is a security scanner for your Terraform code (see <a class="reference external" href="https://github.com/aquasecurity/tfsec/">tfsec check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tfsec</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://tfsec.dev/docs/installation/">tfsec docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a href="#id12"><span class="problematic" id="id13">`/checks/{check_name}/configure`_</span></a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional JSON or YAML configuration file (see <a class="reference external" href="https://tfsec.dev/docs/config/">tfsec config</a>).
+You can also skip this configuration and put the tfsec config in the <code class="docutils literal notranslate"><span class="pre">.tfsec</span></code> folder in the IaC root and name
+it <code class="docutils literal notranslate"><span class="pre">config.json</span></code> or <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> and it will be automatically loaded and used.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="terrascan">
+<span id="id5"></span><h3>Terrascan<a class="headerlink" href="#terrascan" title="Permalink to this headline"></a></h3>
+<p><strong>Terrascan</strong> is a static code analyzer for IaC and defaults to scanning Terraform (see <a class="reference external" href="https://github.com/accurics/terrascan/">Terrascan check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">terrascan</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://docs.accurics.com/projects/accurics-terrascan/en/latest/">Terrascan docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a href="#id14"><span class="problematic" id="id15">`/checks/{check_name}/configure`_</span></a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional TOML configuration file (see <a class="reference external" href="https://docs.accurics.com/projects/accurics-terrascan/en/latest/usage/config_options/">Terrascan config</a>).</p>
 </dd>
 <dt class="field-even">Secret</dt>
 <dd class="field-even"><p>Not supported.</p>
@@ -361,7 +491,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id3"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id6"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner
