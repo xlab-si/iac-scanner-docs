@@ -400,11 +400,9 @@ CLI commands
 openapi
 *******
 
-.. argparse::
-    :module: iac_scan_runner.cli
-    :func: create_parser
-    :prog: iac-scan-runner
-    :path: openapi
+.. click:: iac_scan_runner.cli:openapi
+   :prog: iac_scan_runner
+   :nested: full
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -413,11 +411,9 @@ openapi
 install
 *******
 
-.. argparse::
-    :module: iac_scan_runner.cli
-    :func: create_parser
-    :prog: iac-scan-runner
-    :path: install
+.. click:: iac_scan_runner.cli:install
+   :prog: iac_scan_runner
+   :nested: full
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -426,11 +422,9 @@ install
 run
 ***
 
-.. argparse::
-    :module: iac_scan_runner.cli
-    :func: create_parser
-    :prog: iac-scan-runner
-    :path: run
+.. click:: iac_scan_runner.cli:run
+   :prog: iac_scan_runner
+   :nested: full
 
 ------------------------------------------------------------------------------------------------------------------------
 
