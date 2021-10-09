@@ -39,7 +39,7 @@ release = u''
 
 extensions = ['sphinx_rtd_theme',
               'sphinx_tabs.tabs',
-              'sphinxarg.ext',
+              'sphinx_click',
               'sphinx_copybutton',
               'sphinxcontrib.httpdomain']
 

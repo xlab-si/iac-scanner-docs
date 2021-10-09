@@ -376,61 +376,28 @@ The development version of the package is available on `TestPyPI`_ and the insta
 
 .. _IaC Scan Runner CLI commands:
 
-CLI commands
-############
+Commands
+########
 
-``iac-scan-runner`` it currently allows users to execute the following shell commands:
+``iac-scan-runner`` currently allows users to execute the following shell commands:
 
 +-----------------------------+------------------------------------------------+
 | CLI command                 | Purpose and description                        |
 +=============================+================================================+
-| `iac-scan-runner openapi`_  | print `OpenAPI Specification`_                 |
+| ``iac-scan-runner openapi`` | print `OpenAPI Specification`_                 |
 +-----------------------------+------------------------------------------------+
-| `iac-scan-runner install`_  | install the IaC Scan Runner prerequisites      |
+| ``iac-scan-runner install`` | install the IaC Scan Runner prerequisites      |
 +-----------------------------+------------------------------------------------+
-| `iac-scan-runner run`_      | run the IaC Scan Runner REST API               |
+| ``iac-scan-runner run``     | run the IaC Scan Runner REST API               |
 +-----------------------------+------------------------------------------------+
 
 .. tip:: All the CLI commands are equipped with ``-h/--help`` option to help you.
 
 ------------------------------------------------------------------------------------------------------------------------
 
-.. _iac-scan-runner openapi:
-
-openapi
-*******
-
-.. argparse::
-    :module: iac_scan_runner.cli
-    :func: create_parser
+.. click:: iac_scan_runner.cli:typer_click_object
     :prog: iac-scan-runner
-    :path: openapi
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _iac-scan-runner install:
-
-install
-*******
-
-.. argparse::
-    :module: iac_scan_runner.cli
-    :func: create_parser
-    :prog: iac-scan-runner
-    :path: install
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _iac-scan-runner run:
-
-run
-***
-
-.. argparse::
-    :module: iac_scan_runner.cli
-    :func: create_parser
-    :prog: iac-scan-runner
-    :path: run
+    :nested: full
 
 ------------------------------------------------------------------------------------------------------------------------
 

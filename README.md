@@ -44,9 +44,9 @@ $ python3 -m venv .venv && . .venv/bin/activate
 (.venv) $ pip install --upgrade pip
 (.venv) $ pip install -r requirements.txt
 # build the HTML documentation
-(.venv) $ sphinx-build -M html source build
+(.venv) $ sphinx-build -M html docs build
 # build the Latex and PDF documentation
-(.venv) $ sphinx-build -M latexpdf source build
+(.venv) $ sphinx-build -M latexpdf docs build
 ```
 
 After that you will found rendered documentation HTML files in `build` folder and you can open and view them inside 
