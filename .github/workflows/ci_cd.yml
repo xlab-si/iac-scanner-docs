@@ -75,7 +75,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: docs-pdf
-          path: build/latex/xopera-documentation.pdf
+          path: build/latex/iac-scanner-documentation.pdf
 
   publish:
     runs-on: ubuntu-latest

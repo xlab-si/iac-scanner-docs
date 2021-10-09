@@ -39,6 +39,8 @@ release = u''
 
 extensions = ['sphinx_rtd_theme',
               'sphinx_tabs.tabs',
+              'sphinxarg.ext',
+              'sphinx_copybutton',
               'sphinxcontrib.httpdomain']
 
 # Add any paths that contain templates here, relative to this directory.
@@ -151,7 +153,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'vscanner-documentation', u'IaC Scanner Documentation',
+    (master_doc, 'iac-scanner-documentation', u'IaC Scanner Documentation',
      author, 'iac-scanner-documentation', 'IaC Scanner Documentation.',
      'Miscellaneous'),
 ]
