@@ -51,6 +51,12 @@ After the scanning process the API will return all the check results.
 +===========================================+===================================+
 | `/checks`_                                | Retrieve and filter checks        |
 +-------------------------------------------+-----------------------------------+
+| `/checks/{check_name}/enable`_            | Enable check for running          |
++-------------------------------------------+-----------------------------------+
+| `/checks/{check_name}/disable`_           | Disable check for running         |
++-------------------------------------------+-----------------------------------+
+| `/checks/{check_name}/configure`_         | Configure check                   |
++-------------------------------------------+-----------------------------------+
 | `/scan`_                                  | Initiate IaC scan                 |
 +-------------------------------------------+-----------------------------------+
 
@@ -121,6 +127,133 @@ The API endpoints are further described below.
     :statuscode 200: Successful Response
     :statuscode 404: Bad Request
     :statuscode 422: Validation Error
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks/{check_name}/enable:
+
+.. http:patch:: /checks/{check_name}/enable
+
+    IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
+    Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
+    additional configuration are disabled and have to be enabled before the scanning.
+    This endpoint can be used to enable a specific IaC check (selected by the *check_name* parameter), which means that
+    it will become available for running within IaC scans.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'PATCH' 'http://127.0.0.1:8000/checks/snyk/enable'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks/snyk/enable'
+            response = requests.patch(URL)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        "Check: snyk is now enabled and available to use."
+
+    :param string check_name: check that you want to enable for running
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks/{check_name}/disable:
+
+.. http:patch:: /checks/{check_name}/disable
+
+    This endpoint can be used to disable a specific IaC check (selected by the *check_name* parameter), which means
+    that it will become unavailable for running within IaC scans.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'PATCH' 'http://127.0.0.1:8000/checks/pylint/disable'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks/pylint/enable'
+            response = requests.patch(URL)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        "Check: pylint is now disabled and cannot be used."
+
+    :param string check_name: check that you want to disable for running
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks/{check_name}/configure:
+
+.. http:patch:: /checks/{check_name}/configure
+
+    This endpoint is used to configure a specific IaC check (selected by the *check_name* parameter).
+    Most IaC checks do not need configuration as they already use their default settings.
+    However, some of them - especially the remote service checks (such as `Snyk`_) require to be configured before
+    using them within IaC scans.
+    Some checks will have to be enabled before they can be configured.
+    The configuration of IaC check takes two optional `multipart`_ request body parameters - *config_file* and *secret*.
+    The former (*config_file*) can be used to pass a check configuration file (which is supported by almost every
+    check) that is specific to every check and will override the default check settings.
+    The latter (*secret*) is meant for passing sensitive data such as passwords, API keys, tokens, etc.
+    These secrets are often used to configure the remote service checks - usually to authenticate the user via some
+    token that has been generated in the remote service user profile settings.
+    Some IaC checks support both the aforementioned request body parameters and some support one of them or none.
+    The API will warn you in case of any configuration problems.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'PATCH' 'http://127.0.0.1:8000/checks/sonar-scanner/configure' -H 'Content-Type: multipart/form-data' -F 'config_file=@sonar-project.properties;type=text/plain' -F 'secret=56bf-example-token-f007'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks/sonar-scanner/configure'
+            multipart_form_data = {
+                'config_file': ('sonar-project.properties', open('/path/to/sonar-project.properties', 'rb')),
+                'secret': (None, '56bf-example-token-f007')
+            }
+            response = requests.patch(URL, files=multipart_form_data)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        "Check: sonar-scanner has been configured successfully."
+
+    :param string check_name: check that you want to configure before scanning
+    :form config_file: optional check configuration file
+    :form secret: optional secret for configuration (password, API token, etc.)
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+.. Warning:: Be careful not to expose your secrets directly in your IaC.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -202,6 +335,8 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 | `tfsec`_                      | Terraform                  | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Terrascan`_                  | Terraform                  | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `yamllint`_                   | YAML                       | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
@@ -331,6 +466,37 @@ Terrascan
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _yamllint:
+
+yamllint
+########
+
+**yamllint** is a linter for YAML files that checks for syntax validity, key repetition and cosmetic problems such as
+lines length, trailing spaces, indentation, etc. (see `yamllint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``yamllint``                    |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `yamllint docs`_                |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional YAML configuration file (see `yamllint config`_).
+        You can also skip the configuration put the configuration file to the root of your IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
@@ -419,6 +585,9 @@ Commands
 .. _Terrascan check: https://github.com/accurics/terrascan/
 .. _Terrascan docs: https://docs.accurics.com/projects/accurics-terrascan/en/latest/
 .. _Terrascan config: https://docs.accurics.com/projects/accurics-terrascan/en/latest/usage/config_options/
+.. _yamllint check: https://github.com/adrienverge/yamllint/
+.. _yamllint docs: https://yamllint.readthedocs.io/en/latest/
+.. _yamllint config: https://yamllint.readthedocs.io/en/latest/configuration.html
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/
