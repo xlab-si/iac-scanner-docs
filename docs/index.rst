@@ -38,9 +38,15 @@ Current members:
 Acknowledgments
 ===============
 
+This project is being developed by xOpera team from `XLAB`_ company.
+You can find more information about `xOpera`_ project and xOpera tools in `xOpera's documentation`_.
+
 - This work is being supported by the European Union’s Horizon 2020 research and innovation programme
   (grant no. 101000162, `PIACERE`_).
 
 .. _Matija Cankar: https://github.com/cankarm/
 .. _Anže Luzar: https://github.com/anzoman/
+.. _XLAB: https://www.xlab.si/
+.. _xOpera: https://www.xlab.si/solutions/orchestrator/
+.. _xOpera's documentation: https://xlab-si.github.io/xopera-docs/
 .. _PIACERE: https://www.piacere-project.eu/
