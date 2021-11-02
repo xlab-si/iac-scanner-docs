@@ -57,6 +57,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#tfsec">tfsec</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#terrascan">Terrascan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#yamllint">yamllint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pylint">Pylint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bandit">Bandit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety">Safety</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
@@ -308,7 +311,7 @@ that it will become unavailable for running within IaC scans.</p>
 <span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#patch--checks-check_name-configure" title="Permalink to this definition"></a></dt>
 <dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
 Most IaC checks do not need configuration as they already use their default settings.
-However, some of them - especially the remote service checks (such as <a href="#id9"><span class="problematic" id="id10">`Snyk`_</span></a>) require to be configured before
+However, some of them - especially the remote service checks (such as <a href="#id12"><span class="problematic" id="id13">`Snyk`_</span></a>) require to be configured before
 using them within IaC scans.
 Some checks will have to be enabled before they can be configured.
 The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
@@ -473,6 +476,21 @@ supplied IaC go through multiple checks.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#yamllint">yamllint</a></p></td>
 <td><p>YAML</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylint">Pylint</a></p></td>
+<td><p>Python</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bandit">Bandit</a></p></td>
+<td><p>Python</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#safety">Safety</a></p></td>
+<td><p>Python packages</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
@@ -669,6 +687,118 @@ You can also skip the configuration put the configuration file to the root of yo
 </div>
 <hr class="docutils" />
 </div>
+<div class="section" id="pylint">
+<span id="id7"></span><h3>Pylint<a class="headerlink" href="#pylint" title="Permalink to this headline"></a></h3>
+<p><strong>Pylint</strong> is a Python static code analysis tool that checks for errors in Python code, tries to enforce a coding
+standard and looks for code smells (see <a class="reference external" href="https://github.com/PyCQA/pylint/">Pylint check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pylint</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="http://pylint.pycqa.org/en/latest/">Pylint docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional TOML configuration file (see <a class="reference external" href="http://pylint.pycqa.org/en/latest/user_guide/run.html#command-line-options">Pylint config</a>).
+You can also skip this configuration and put the config file (it could be called <code class="docutils literal notranslate"><span class="pre">.pylintrc</span></code> or there are
+numerous other options).</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="bandit">
+<span id="id8"></span><h3>Bandit<a class="headerlink" href="#bandit" title="Permalink to this headline"></a></h3>
+<p><strong>Bandit</strong> is a tool designed to find common security issues in Python code (see <a class="reference external" href="https://github.com/PyCQA/bandit/">Bandit check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bandit</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://bandit.readthedocs.io/en/latest/">Bandit docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional YAML or TOML configuration file (see <a class="reference external" href="https://github.com/PyCQA/bandit/">Bandit config</a>).</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="safety">
+<span id="id9"></span><h3>Safety<a class="headerlink" href="#safety" title="Permalink to this headline"></a></h3>
+<p><strong>Safety</strong> is a is a <a class="reference external" href="https://pyup.io/">PyUp</a> CLI tool that checks your installed Python dependencies for known security vulnerabilities
+(see <a class="reference external" href="https://github.com/pyupio/safety/">PyUp Safety check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pyup-safety</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://pyup.io/safety/">PyUp Safety docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Not supported.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
 </div>
 <div class="section" id="cli">
 <span id="iac-scan-runner-cli"></span><h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
@@ -684,7 +814,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id7"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id10"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner

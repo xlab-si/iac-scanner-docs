@@ -338,6 +338,12 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `yamllint`_                   | YAML                       | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Pylint`_                     | Python                     | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Bandit`_                     | Python                     | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Safety`_                     | Python packages            | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
 
@@ -497,6 +503,97 @@ lines length, trailing spaces, indentation, etc. (see `yamllint check`_).
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _Pylint:
+
+Pylint
+######
+
+**Pylint** is a Python static code analysis tool that checks for errors in Python code, tries to enforce a coding
+standard and looks for code smells (see `Pylint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``pylint``                      |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Pylint docs`_                  |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional TOML configuration file (see `Pylint config`_).
+        You can also skip this configuration and put the config file (it could be called ``.pylintrc`` or there are
+        numerous other options).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _Bandit:
+
+Bandit
+######
+
+**Bandit** is a tool designed to find common security issues in Python code (see `Bandit check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``bandit``                      |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Bandit docs`_                  |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional YAML or TOML configuration file (see `Bandit config`_).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _Safety:
+
+Safety
+######
+
+**Safety** is a is a `PyUp`_ CLI tool that checks your installed Python dependencies for known security vulnerabilities
+(see `PyUp Safety check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``pyup-safety``                 |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `PyUp Safety docs`_             |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Not supported.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
@@ -588,6 +685,16 @@ Commands
 .. _yamllint check: https://github.com/adrienverge/yamllint/
 .. _yamllint docs: https://yamllint.readthedocs.io/en/latest/
 .. _yamllint config: https://yamllint.readthedocs.io/en/latest/configuration.html
+.. _Pylint check: https://github.com/PyCQA/pylint/
+.. _Pylint docs: http://pylint.pycqa.org/en/latest/
+.. _Pylint config: http://pylint.pycqa.org/en/latest/user_guide/run.html#command-line-options
+.. _Bandit check: https://github.com/PyCQA/bandit/
+.. _Bandit docs: https://bandit.readthedocs.io/en/latest/
+.. _Bandit config: https://github.com/PyCQA/bandit/
+.. _PyUp: https://pyup.io/
+.. _PyUp Safety check: https://github.com/pyupio/safety/
+.. _PyUp Safety docs: https://pyup.io/safety/
+.. _PyUp Safety config: https://github.com/pyupio/safety/
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/
