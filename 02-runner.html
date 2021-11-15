@@ -60,6 +60,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#pylint">Pylint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bandit">Bandit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#safety">Safety</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gitleaks">Gitleaks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-secrets">git-secrets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#markdown-lint">Markdown lint</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
@@ -71,6 +74,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="03-saas.html">IaC Scanner SaaS</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="04-contact.html">Get in touch</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/xlab-si/iac-scan-runner">GitHub</a></li>
 </ul>
 
         </div>
@@ -311,7 +319,7 @@ that it will become unavailable for running within IaC scans.</p>
 <span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#patch--checks-check_name-configure" title="Permalink to this definition"></a></dt>
 <dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
 Most IaC checks do not need configuration as they already use their default settings.
-However, some of them - especially the remote service checks (such as <a href="#id12"><span class="problematic" id="id13">`Snyk`_</span></a>) require to be configured before
+However, some of them - especially the remote service checks (such as <a href="#id15"><span class="problematic" id="id16">`Snyk`_</span></a>) require to be configured before
 using them within IaC scans.
 Some checks will have to be enabled before they can be configured.
 The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
@@ -447,7 +455,7 @@ supplied IaC go through multiple checks.</p>
 <col style="width: 24%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>CLI command</p></th>
+<tr class="row-odd"><th class="head"><p>IaC Check</p></th>
 <th class="head"><p>Target IaC entity</p></th>
 <th class="head"><p>Enabled (by default)</p></th>
 <th class="head"><p>Needs configuration</p></th>
@@ -491,6 +499,21 @@ supplied IaC go through multiple checks.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#safety">Safety</a></p></td>
 <td><p>Python packages</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gitleaks">Gitleaks</a></p></td>
+<td><p>Git repositories</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#git-secrets">git-secrets</a></p></td>
+<td><p>Git repositories</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#markdown-lint">Markdown lint</a></p></td>
+<td><p>Markdown files</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
@@ -799,10 +822,121 @@ numerous other options).</p>
 </div>
 <hr class="docutils" />
 </div>
+<div class="section" id="gitleaks">
+<span id="id10"></span><h3>Gitleaks<a class="headerlink" href="#gitleaks" title="Permalink to this headline"></a></h3>
+<p><strong>Gitleaks</strong> is a SAST tool for detecting hardcoded secrets like passwords, API keys, and tokens in Git repos
+(see <a class="reference external" href="https://github.com/zricethezav/gitleaks/">Gitleaks check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git-leaks</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://docs.securecodebox.io/docs/scanners/gitleaks/">Gitleaks docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional TOML configuration file (see <a class="reference external" href="https://github.com/zricethezav/gitleaks#configuration">Gitleaks config</a>).</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="git-secrets">
+<span id="id11"></span><h3>git-secrets<a class="headerlink" href="#git-secrets" title="Permalink to this headline"></a></h3>
+<p><strong>git-secrets</strong> is a tool that prevents you from committing secrets and credentials into Git repositories
+(see <a class="reference external" href="https://github.com/awslabs/git-secrets/">git-secrets check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git-secrets</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/awslabs/git-secrets/">git-secrets docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Not supported.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="markdown-lint">
+<span id="id12"></span><h3>Markdown lint<a class="headerlink" href="#markdown-lint" title="Permalink to this headline"></a></h3>
+<p><strong>Markdown lint</strong> is a tool to check markdown files and flag style issues (see <a class="reference external" href="https://github.com/markdownlint/markdownlint/">Markdown lint check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">markdown-lint</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/markdownlint/markdownlint">Markdown lint docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional <code class="docutils literal notranslate"><span class="pre">.rc</span></code> or <code class="docutils literal notranslate"><span class="pre">.mdlrc</span></code> configuration file (see <a class="reference external" href="https://github.com/markdownlint/markdownlint/blob/master/docs/configuration.md">Markdown lint config</a>).
+You can also skip the configuration put the configuration file named <code class="docutils literal notranslate"><span class="pre">.mdlrc</span></code> to the root of your IaC package.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
 </div>
 <div class="section" id="cli">
 <span id="iac-scan-runner-cli"></span><h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
-<p>The <strong>IaC Scan Runner CLI</strong> enables easier setup of IaC Scanner in console environments.</p>
+<p>The <strong>IaC Scan Runner CLI</strong> enables easier setup of IaC Scan Runner in console environments.</p>
 <div class="section" id="prerequisites">
 <span id="iac-scan-runner-cli-prerequisites"></span><h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
 <p>The <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">Scan Runner CLI</a> requires Python 3 and a virtual environment.
@@ -814,7 +948,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id10"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id13"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner
