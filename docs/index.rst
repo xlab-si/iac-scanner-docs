@@ -11,6 +11,12 @@ The following documentation explains the **IaC Scanner**.
     02-runner
     03-saas
 
+.. toctree::
+    :caption: More info
+
+    04-contact
+    GitHub <https://github.com/xlab-si/iac-scan-runner>
+
 ..
    Indices and tables
    ==================
@@ -24,6 +30,8 @@ The following documentation explains the **IaC Scanner**.
 =======
 Contact
 =======
+
+You can contact the xOpera team by sending an email to xopera@xlab.si.
 
 The list of contributors:
 

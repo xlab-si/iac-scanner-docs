@@ -326,7 +326,7 @@ supplied IaC go through multiple checks.
 IaC Scan Runner currently supports the following *IaC checks* that can be executed as part of one *IaC scan*:
 
 +-------------------------------+----------------------------+----------------------------+----------------------------+
-| CLI command                   | Target IaC entity          | Enabled (by default)       | Needs configuration        |
+| IaC Check                     | Target IaC entity          | Enabled (by default)       | Needs configuration        |
 +===============================+============================+============================+============================+
 | `Ansible Lint`_               | Ansible                    | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
@@ -343,6 +343,12 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 | `Bandit`_                     | Python                     | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Safety`_                     | Python packages            | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Gitleaks`_                   | Git repositories           | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `git-secrets`_                | Git repositories           | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Markdown lint`_              | Markdown files             | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
@@ -594,13 +600,103 @@ Safety
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _Gitleaks:
+
+Gitleaks
+########
+
+**Gitleaks** is a SAST tool for detecting hardcoded secrets like passwords, API keys, and tokens in Git repos
+(see `Gitleaks check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``git-leaks``                   |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Gitleaks docs`_                |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional TOML configuration file (see `Gitleaks config`_).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _git-secrets:
+
+git-secrets
+###########
+
+**git-secrets** is a tool that prevents you from committing secrets and credentials into Git repositories
+(see `git-secrets check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``git-secrets``                 |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `git-secrets docs`_             |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Not supported.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _Markdown lint:
+
+Markdown lint
+#############
+
+**Markdown lint** is a tool to check markdown files and flag style issues (see `Markdown lint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``markdown-lint``               |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Markdown lint docs`_           |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional ``.rc`` or ``.mdlrc`` configuration file (see `Markdown lint config`_).
+        You can also skip the configuration put the configuration file named ``.mdlrc`` to the root of your IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
 CLI
 ===
 
-The **IaC Scan Runner CLI** enables easier setup of IaC Scanner in console environments.
+The **IaC Scan Runner CLI** enables easier setup of IaC Scan Runner in console environments.
 
 .. _IaC Scan Runner CLI prerequisites:
 
@@ -695,6 +791,14 @@ Commands
 .. _PyUp Safety check: https://github.com/pyupio/safety/
 .. _PyUp Safety docs: https://pyup.io/safety/
 .. _PyUp Safety config: https://github.com/pyupio/safety/
+.. _Gitleaks check: https://github.com/zricethezav/gitleaks/
+.. _Gitleaks docs: https://docs.securecodebox.io/docs/scanners/gitleaks/
+.. _Gitleaks config: https://github.com/zricethezav/gitleaks#configuration
+.. _git-secrets check: https://github.com/awslabs/git-secrets/
+.. _git-secrets docs: https://github.com/awslabs/git-secrets/
+.. _Markdown lint check: https://github.com/markdownlint/markdownlint/
+.. _Markdown lint docs: https://github.com/markdownlint/markdownlint
+.. _Markdown lint config: https://github.com/markdownlint/markdownlint/blob/master/docs/configuration.md
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/

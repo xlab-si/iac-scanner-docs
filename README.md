@@ -9,6 +9,9 @@ This repository holds the documentation for the [IaC Scanner].
   - [Description](#purpose-and-description)
   - [Run with Docker](#run-with-docker)
   - [Local building and testing](#local-building-and-testing)
+  - [License](#license)
+  - [Contact](#contact)
+  - [Acknowledgement](#acknowledgement)
 
 ## Purpose and description
 This project documents all the related IaC Scanner tools and services.
@@ -52,8 +55,21 @@ $ python3 -m venv .venv && . .venv/bin/activate
 After that you will found rendered documentation HTML files in `build` folder and you can open and view them inside 
 your browser. 
 
+## License
+This work is licensed under the [Apache License 2.0].
+
+## Contact
+You can contact the xOpera team by sending an email to [xopera@xlab.si].
+
+## Acknowledgement
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under Grant 
+Agreement No. 101000162 ([PIACERE]).
+
 [IaC Scanner]: https://xlab-si.github.io/iac-scanner-docs/
 [GitHub Pages]: https://xlab-si.github.io/iac-scanner-docs/
 [xscanner/docs]: https://hub.docker.com/r/xscanner/docs
 [Sphinx documentation tool]: https://www.sphinx-doc.org/en/master/
 [Read the Docs]: https://readthedocs.org/
+[Apache License 2.0]: https://www.apache.org/licenses/LICENSE-2.0
+[xopera@xlab.si]: mailto:xopera@xlab.si
+[PIACERE]: https://www.piacere-project.eu/
