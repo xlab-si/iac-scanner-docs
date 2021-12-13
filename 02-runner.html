@@ -63,12 +63,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#gitleaks">Gitleaks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#git-secrets">git-secrets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#markdown-lint">Markdown lint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hadolint">hadolint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gixy">Gixy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shellcheck">ShellCheck</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#iac-scan-runner-cli-installation">Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#iac-scan-runner">iac-scan-runner</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -319,7 +325,7 @@ that it will become unavailable for running within IaC scans.</p>
 <span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#patch--checks-check_name-configure" title="Permalink to this definition"></a></dt>
 <dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
 Most IaC checks do not need configuration as they already use their default settings.
-However, some of them - especially the remote service checks (such as <a href="#id15"><span class="problematic" id="id16">`Snyk`_</span></a>) require to be configured before
+However, some of them - especially the remote service checks (such as <a href="#id18"><span class="problematic" id="id19">`Snyk`_</span></a>) require to be configured before
 using them within IaC scans.
 Some checks will have to be enabled before they can be configured.
 The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
@@ -514,6 +520,21 @@ supplied IaC go through multiple checks.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#markdown-lint">Markdown lint</a></p></td>
 <td><p>Markdown files</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hadolint">hadolint</a></p></td>
+<td><p>Docker</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gixy">Gixy</a></p></td>
+<td><p>Nginx configuration</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#shellcheck">ShellCheck</a></p></td>
+<td><p>Shell scripts</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
@@ -933,6 +954,116 @@ You can also skip the configuration put the configuration file named <code class
 </div>
 <hr class="docutils" />
 </div>
+<div class="section" id="hadolint">
+<span id="id13"></span><h3>hadolint<a class="headerlink" href="#hadolint" title="Permalink to this headline"></a></h3>
+<p><strong>hadolint</strong> is a Dockerfile linter (see <a class="reference external" href="https://github.com/hadolint/hadolint/">hadolint check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">hadolint</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/hadolint/hadolint/blob/master/docs/INTEGRATION.md">hadolint docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional YAML configuration file (see <a class="reference external" href="https://github.com/hadolint/hadolint#configure">hadolint config</a>).
+You can also skip this configuration and put the configuration file (with the name <code class="docutils literal notranslate"><span class="pre">.hadolint.yaml</span></code> or
+<code class="docutils literal notranslate"><span class="pre">.hadolint.yml</span></code>) to the root of your IaC package.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="gixy">
+<span id="id14"></span><h3>Gixy<a class="headerlink" href="#gixy" title="Permalink to this headline"></a></h3>
+<p><strong>Gixy</strong> is a tool to analyze Nginx configuration (see <a class="reference external" href="https://github.com/yandex/gixy/">Gixy check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gixy</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/yandex/gixy/">Gixy docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional <code class="docutils literal notranslate"><span class="pre">.conf</span></code> configuration file (see <a class="reference external" href="https://github.com/yandex/gixy/">Gixy config</a>).</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="shellcheck">
+<span id="id15"></span><h3>ShellCheck<a class="headerlink" href="#shellcheck" title="Permalink to this headline"></a></h3>
+<p><strong>stylelint</strong> is a static analysis tool for shell scripts (see <a class="reference external" href="https://github.com/koalaman/shellcheck/">ShellCheck check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">shellcheck</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/koalaman/shellcheck/wiki">ShellCheck docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Not supported.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
 </div>
 <div class="section" id="cli">
 <span id="iac-scan-runner-cli"></span><h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
@@ -948,7 +1079,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id13"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id16"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner
@@ -992,6 +1123,78 @@ The simplest way to test <code class="docutils literal notranslate"><span class=
 <p>All the CLI commands are equipped with <code class="docutils literal notranslate"><span class="pre">-h/--help</span></code> option to help you.</p>
 </div>
 <hr class="docutils" />
+<div class="section" id="iac-scan-runner">
+<h4>iac-scan-runner<a class="headerlink" href="#iac-scan-runner" title="Permalink to this headline"></a></h4>
+<p>IaC Scan Runner CLI</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-install-completion">
+<span class="sig-name descname"><span class="pre">--install-completion</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;install_completion&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-install-completion" title="Permalink to this definition"></a></dt>
+<dd><p>Install completion for the specified shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>bash | zsh | fish | powershell | pwsh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-show-completion">
+<span class="sig-name descname"><span class="pre">--show-completion</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;show_completion&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-show-completion" title="Permalink to this definition"></a></dt>
+<dd><p>Show completion for the specified shell, to copy it or customize the installation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>bash | zsh | fish | powershell | pwsh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="iac-scan-runner-install">
+<h5>install<a class="headerlink" href="#iac-scan-runner-install" title="Permalink to this headline"></a></h5>
+<p>Install prerequisites for IaC Scan Runner</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner install <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="iac-scan-runner-openapi">
+<h5>openapi<a class="headerlink" href="#iac-scan-runner-openapi" title="Permalink to this headline"></a></h5>
+<p>Get OpenAPI specification</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner openapi <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-openapi-f">
+<span id="cmdoption-iac-scan-runner-openapi-format"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--format</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_format&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-openapi-f" title="Permalink to this definition"></a></dt>
+<dd><p>OpenAPI output format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>OpenApiFormat.json</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>json | yaml</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-iac-scan-runner-openapi-o">
+<span id="cmdoption-iac-scan-runner-openapi-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></span><a class="headerlink" href="#cmdoption-iac-scan-runner-openapi-o" title="Permalink to this definition"></a></dt>
+<dd><p>Output file path</p>
+</dd></dl>
+
+</div>
+<div class="section" id="iac-scan-runner-run">
+<h5>run<a class="headerlink" href="#iac-scan-runner-run" title="Permalink to this headline"></a></h5>
+<p>Run REST API for IaC Scan Runner</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iac-scan-runner run <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
 <hr class="docutils" />
 </div>
 </div>
