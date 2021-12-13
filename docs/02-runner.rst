@@ -350,6 +350,12 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Markdown lint`_              | Markdown files             | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `hadolint`_                   | Docker                     | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Gixy`_                       | Nginx configuration        | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `ShellCheck`_                 | Shell scripts              | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
 
@@ -690,6 +696,95 @@ Markdown lint
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _hadolint:
+
+hadolint
+########
+
+**hadolint** is a Dockerfile linter (see `hadolint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``hadolint``                    |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `hadolint docs`_                |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional YAML configuration file (see `hadolint config`_).
+        You can also skip this configuration and put the configuration file (with the name ``.hadolint.yaml`` or
+        ``.hadolint.yml``) to the root of your IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _Gixy:
+
+Gixy
+####
+
+**Gixy** is a tool to analyze Nginx configuration (see `Gixy check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``gixy``                        |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Gixy docs`_                    |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional ``.conf`` configuration file (see `Gixy config`_).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _ShellCheck:
+
+ShellCheck
+##########
+
+**stylelint** is a static analysis tool for shell scripts (see `ShellCheck check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``shellcheck``                  |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `ShellCheck docs`_              |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Not supported.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
@@ -799,6 +894,15 @@ Commands
 .. _Markdown lint check: https://github.com/markdownlint/markdownlint/
 .. _Markdown lint docs: https://github.com/markdownlint/markdownlint
 .. _Markdown lint config: https://github.com/markdownlint/markdownlint/blob/master/docs/configuration.md
+.. _hadolint check: https://github.com/hadolint/hadolint/
+.. _hadolint docs: https://github.com/hadolint/hadolint/blob/master/docs/INTEGRATION.md
+.. _hadolint config: https://github.com/hadolint/hadolint#configure
+.. _Gixy check: https://github.com/yandex/gixy/
+.. _Gixy docs: https://github.com/yandex/gixy/
+.. _Gixy config: https://github.com/yandex/gixy/
+.. _ShellCheck check: https://github.com/koalaman/shellcheck/
+.. _ShellCheck docs: https://github.com/koalaman/shellcheck/wiki
+.. _ShellCheck config: https://github.com/koalaman/shellcheck/
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/
