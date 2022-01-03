@@ -356,6 +356,14 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `ShellCheck`_                 | Shell scripts              | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `ESLint`_                     | JavaScript                 | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `TypeScript ESLint`_          | TypeScript                 | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `HTMLHint`_                   | HTML                       | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `stylelint`_                  | CSS and other styles       | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
 
@@ -785,6 +793,129 @@ ShellCheck
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _ESLint:
+
+ESLint
+######
+
+**ESLint** is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code
+(see `ESLint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``es-lint``                     |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `ESLint docs`_                  |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional configuration file (see `ESLint config`_).
+        You can also skip this configuration and put the configuration file to the root of your IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _TypeScript ESLint:
+
+TypeScript ESLint
+#################
+
+**TypeScript ESLint** enables ESLint to support TypeScript (see `TypeScript ESLint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``ts-lint``                     |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `TypeScript ESLint docs`_       |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional configuration file (see `TypeScript ESLint config`_).
+        You can also skip this configuration and put the configuration file to the root of your IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _HTMLHint:
+
+HTMLHint
+########
+
+**HTMLHint** is the static code analysis tool you need for your HTML (see `HTMLHint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``htmlhint``                    |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `HTMLHint docs`_                |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional ``.conf`` configuration file (see `HTMLHint config`_).
+        You can also skip this configuration and put the configuration file called ``.htmlhintrc`` to the root of your
+        IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _stylelint:
+
+stylelint
+#########
+
+**stylelint** is a mighty, modern linter that helps you avoid errors and enforce conventions in your styles
+(see `stylelint check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``stylelint``                   |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `stylelint docs`_               |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional configuration file (see `stylelint config`_).
+        You can also skip this configuration and put the configuration file called to the root of your IaC package.
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
@@ -903,6 +1034,18 @@ Commands
 .. _ShellCheck check: https://github.com/koalaman/shellcheck/
 .. _ShellCheck docs: https://github.com/koalaman/shellcheck/wiki
 .. _ShellCheck config: https://github.com/koalaman/shellcheck/
+.. _ESLint check: https://github.com/eslint/eslint/
+.. _ESLint docs: https://eslint.org/
+.. _ESLint config: https://eslint.org/docs/user-guide/configuring/
+.. _TypeScript ESLint check: https://github.com/typescript-eslint/typescript-eslint/
+.. _TypeScript ESLint docs: https://typescript-eslint.io/
+.. _TypeScript ESLint config: https://eslint.org/docs/user-guide/configuring/
+.. _HTMLHint check: https://github.com/htmlhint/HTMLHint/
+.. _HTMLHint docs: https://htmlhint.com/
+.. _HTMLHint config: https://htmlhint.com/docs/user-guide/configuration
+.. _stylelint check: https://github.com/stylelint/stylelint/
+.. _stylelint docs: https://stylelint.io/
+.. _stylelint config: https://stylelint.io/user-guide/configure
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/
