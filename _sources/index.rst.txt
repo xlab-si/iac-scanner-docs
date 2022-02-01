@@ -6,6 +6,7 @@ The following documentation explains the **IaC Scanner**.
 
 .. toctree::
     :caption: Table of Contents
+    :hidden:
 
     01-intro
     02-runner
@@ -13,6 +14,7 @@ The following documentation explains the **IaC Scanner**.
 
 .. toctree::
     :caption: More info
+    :hidden:
 
     04-contact
     GitHub <https://github.com/xlab-si/iac-scan-runner>
@@ -37,8 +39,8 @@ The list of contributors:
 
 Current members:
 
-- `Matija Cankar`_: project designing and ideas
-- `Anže Luzar`_: IaC Scan Runner, this documentation
+- Matija Cankar (https://github.com/cankarm/): project designing and ideas
+- Anže Luzar (https://github.com/anzoman/): IaC Scan Runner, this documentation
 
 .. _Acknowledgments:
 
@@ -52,8 +54,6 @@ You can find more information about `xOpera`_ project and xOpera tools in `xOper
 - This work is being supported by the European Union’s Horizon 2020 research and innovation programme
   (grant no. 101000162, `PIACERE`_).
 
-.. _Matija Cankar: https://github.com/cankarm/
-.. _Anže Luzar: https://github.com/anzoman/
 .. _XLAB: https://www.xlab.si/
 .. _xOpera: https://www.xlab.si/solutions/orchestrator/
 .. _xOpera's documentation: https://xlab-si.github.io/xopera-docs/

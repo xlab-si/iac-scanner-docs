@@ -52,6 +52,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scanner-and-check-reference">Scanner and check reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xopera-tosca-validation">xOpera TOSCA validation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ansible-lint">Ansible Lint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tflint">TFLint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tfsec">tfsec</a></li>
@@ -70,6 +71,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#typescript-eslint">TypeScript ESLint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#htmlhint">HTMLHint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stylelint">stylelint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checkstyle">Checkstyle</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
@@ -329,7 +331,7 @@ that it will become unavailable for running within IaC scans.</p>
 <span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#patch--checks-check_name-configure" title="Permalink to this definition"></a></dt>
 <dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
 Most IaC checks do not need configuration as they already use their default settings.
-However, some of them - especially the remote service checks (such as <a href="#id22"><span class="problematic" id="id23">`Snyk`_</span></a>) require to be configured before
+However, some of them - especially the remote service checks (such as <a href="#id24"><span class="problematic" id="id25">`Snyk`_</span></a>) require to be configured before
 using them within IaC scans.
 Some checks will have to be enabled before they can be configured.
 The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
@@ -472,93 +474,103 @@ supplied IaC go through multiple checks.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansible-lint">Ansible Lint</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#xopera-tosca-validation">xOpera TOSCA validation</a></p></td>
+<td><p>TOSCA</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansible-lint">Ansible Lint</a></p></td>
 <td><p>Ansible</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tflint">TFLint</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tflint">TFLint</a></p></td>
 <td><p>Terraform</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tfsec">tfsec</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tfsec">tfsec</a></p></td>
 <td><p>Terraform</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#terrascan">Terrascan</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#terrascan">Terrascan</a></p></td>
 <td><p>Terraform</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#yamllint">yamllint</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yamllint">yamllint</a></p></td>
 <td><p>YAML</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pylint">Pylint</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylint">Pylint</a></p></td>
 <td><p>Python</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#bandit">Bandit</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bandit">Bandit</a></p></td>
 <td><p>Python</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#safety">Safety</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#safety">Safety</a></p></td>
 <td><p>Python packages</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gitleaks">Gitleaks</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gitleaks">Gitleaks</a></p></td>
 <td><p>Git repositories</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#git-secrets">git-secrets</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#git-secrets">git-secrets</a></p></td>
 <td><p>Git repositories</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#markdown-lint">Markdown lint</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#markdown-lint">Markdown lint</a></p></td>
 <td><p>Markdown files</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#hadolint">hadolint</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#hadolint">hadolint</a></p></td>
 <td><p>Docker</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gixy">Gixy</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gixy">Gixy</a></p></td>
 <td><p>Nginx configuration</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#shellcheck">ShellCheck</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#shellcheck">ShellCheck</a></p></td>
 <td><p>Shell scripts</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#eslint">ESLint</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eslint">ESLint</a></p></td>
 <td><p>JavaScript</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#typescript-eslint">TypeScript ESLint</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#typescript-eslint">TypeScript ESLint</a></p></td>
 <td><p>TypeScript</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#htmlhint">HTMLHint</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#htmlhint">HTMLHint</a></p></td>
 <td><p>HTML</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylelint">stylelint</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylelint">stylelint</a></p></td>
 <td><p>CSS and other styles</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#checkstyle">Checkstyle</a></p></td>
+<td><p>Java</p></td>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
@@ -566,8 +578,46 @@ supplied IaC go through multiple checks.</p>
 </table>
 <p>The following subsections explain the necessary API actions for each check.</p>
 <hr class="docutils" />
+<div class="section" id="xopera-tosca-validation">
+<span id="id2"></span><h3>xOpera TOSCA validation<a class="headerlink" href="#xopera-tosca-validation" title="Permalink to this headline"></a></h3>
+<p><strong>xOpera</strong> project that includes <a class="reference external" href="https://github.com/xlab-si/xopera-opera">xOpera TOSCA orchestrator</a> called <code class="docutils literal notranslate"><span class="pre">opera</span></code> - a lightweight TOSCA orchestrator that
+comes with CLI that is (apart from all orchestration actions) able to parse and validate <a class="reference external" href="https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=tosca">OASIS TOSCA</a> templates and
+CSAR files (see <a class="reference external" href="https://xlab-si.github.io/xopera-docs/cli.html#validate">xOpera validate check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">xopera</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://xlab-si.github.io/xopera-docs/">xOpera docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Not supported.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
 <div class="section" id="ansible-lint">
-<span id="id2"></span><h3>Ansible Lint<a class="headerlink" href="#ansible-lint" title="Permalink to this headline"></a></h3>
+<span id="id3"></span><h3>Ansible Lint<a class="headerlink" href="#ansible-lint" title="Permalink to this headline"></a></h3>
 <p><strong>Ansible Lint</strong> is a command-line tool for linting playbooks, roles and collections aimed towards any Ansible users
 (see <a class="reference external" href="https://github.com/willthames/ansible-lint/">Ansible Lint check</a>).</p>
 <table class="docutils align-default">
@@ -606,7 +656,7 @@ of your IaC package.</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="tflint">
-<span id="id3"></span><h3>TFLint<a class="headerlink" href="#tflint" title="Permalink to this headline"></a></h3>
+<span id="id4"></span><h3>TFLint<a class="headerlink" href="#tflint" title="Permalink to this headline"></a></h3>
 <p><strong>TFLint</strong> is a a pluggable Terraform linter.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -644,7 +694,7 @@ IaC package.</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="tfsec">
-<span id="id4"></span><h3>tfsec<a class="headerlink" href="#tfsec" title="Permalink to this headline"></a></h3>
+<span id="id5"></span><h3>tfsec<a class="headerlink" href="#tfsec" title="Permalink to this headline"></a></h3>
 <p><strong>tfsec</strong> is a security scanner for your Terraform code (see <a class="reference external" href="https://github.com/aquasecurity/tfsec/">tfsec check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -682,7 +732,7 @@ it <code class="docutils literal notranslate"><span class="pre">config.json</spa
 <hr class="docutils" />
 </div>
 <div class="section" id="terrascan">
-<span id="id5"></span><h3>Terrascan<a class="headerlink" href="#terrascan" title="Permalink to this headline"></a></h3>
+<span id="id6"></span><h3>Terrascan<a class="headerlink" href="#terrascan" title="Permalink to this headline"></a></h3>
 <p><strong>Terrascan</strong> is a static code analyzer for IaC and defaults to scanning Terraform (see <a class="reference external" href="https://github.com/accurics/terrascan/">Terrascan check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -718,7 +768,7 @@ it <code class="docutils literal notranslate"><span class="pre">config.json</spa
 <hr class="docutils" />
 </div>
 <div class="section" id="yamllint">
-<span id="id6"></span><h3>yamllint<a class="headerlink" href="#yamllint" title="Permalink to this headline"></a></h3>
+<span id="id7"></span><h3>yamllint<a class="headerlink" href="#yamllint" title="Permalink to this headline"></a></h3>
 <p><strong>yamllint</strong> is a linter for YAML files that checks for syntax validity, key repetition and cosmetic problems such as
 lines length, trailing spaces, indentation, etc. (see <a class="reference external" href="https://github.com/adrienverge/yamllint/">yamllint check</a>).</p>
 <table class="docutils align-default">
@@ -756,7 +806,7 @@ You can also skip the configuration put the configuration file to the root of yo
 <hr class="docutils" />
 </div>
 <div class="section" id="pylint">
-<span id="id7"></span><h3>Pylint<a class="headerlink" href="#pylint" title="Permalink to this headline"></a></h3>
+<span id="id8"></span><h3>Pylint<a class="headerlink" href="#pylint" title="Permalink to this headline"></a></h3>
 <p><strong>Pylint</strong> is a Python static code analysis tool that checks for errors in Python code, tries to enforce a coding
 standard and looks for code smells (see <a class="reference external" href="https://github.com/PyCQA/pylint/">Pylint check</a>).</p>
 <table class="docutils align-default">
@@ -795,7 +845,7 @@ numerous other options).</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="bandit">
-<span id="id8"></span><h3>Bandit<a class="headerlink" href="#bandit" title="Permalink to this headline"></a></h3>
+<span id="id9"></span><h3>Bandit<a class="headerlink" href="#bandit" title="Permalink to this headline"></a></h3>
 <p><strong>Bandit</strong> is a tool designed to find common security issues in Python code (see <a class="reference external" href="https://github.com/PyCQA/bandit/">Bandit check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -831,7 +881,7 @@ numerous other options).</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="safety">
-<span id="id9"></span><h3>Safety<a class="headerlink" href="#safety" title="Permalink to this headline"></a></h3>
+<span id="id10"></span><h3>Safety<a class="headerlink" href="#safety" title="Permalink to this headline"></a></h3>
 <p><strong>Safety</strong> is a is a <a class="reference external" href="https://pyup.io/">PyUp</a> CLI tool that checks your installed Python dependencies for known security vulnerabilities
 (see <a class="reference external" href="https://github.com/pyupio/safety/">PyUp Safety check</a>).</p>
 <table class="docutils align-default">
@@ -868,7 +918,7 @@ numerous other options).</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="gitleaks">
-<span id="id10"></span><h3>Gitleaks<a class="headerlink" href="#gitleaks" title="Permalink to this headline"></a></h3>
+<span id="id11"></span><h3>Gitleaks<a class="headerlink" href="#gitleaks" title="Permalink to this headline"></a></h3>
 <p><strong>Gitleaks</strong> is a SAST tool for detecting hardcoded secrets like passwords, API keys, and tokens in Git repos
 (see <a class="reference external" href="https://github.com/zricethezav/gitleaks/">Gitleaks check</a>).</p>
 <table class="docutils align-default">
@@ -905,7 +955,7 @@ numerous other options).</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="git-secrets">
-<span id="id11"></span><h3>git-secrets<a class="headerlink" href="#git-secrets" title="Permalink to this headline"></a></h3>
+<span id="id12"></span><h3>git-secrets<a class="headerlink" href="#git-secrets" title="Permalink to this headline"></a></h3>
 <p><strong>git-secrets</strong> is a tool that prevents you from committing secrets and credentials into Git repositories
 (see <a class="reference external" href="https://github.com/awslabs/git-secrets/">git-secrets check</a>).</p>
 <table class="docutils align-default">
@@ -942,7 +992,7 @@ numerous other options).</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="markdown-lint">
-<span id="id12"></span><h3>Markdown lint<a class="headerlink" href="#markdown-lint" title="Permalink to this headline"></a></h3>
+<span id="id13"></span><h3>Markdown lint<a class="headerlink" href="#markdown-lint" title="Permalink to this headline"></a></h3>
 <p><strong>Markdown lint</strong> is a tool to check markdown files and flag style issues (see <a class="reference external" href="https://github.com/markdownlint/markdownlint/">Markdown lint check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -979,7 +1029,7 @@ You can also skip the configuration put the configuration file named <code class
 <hr class="docutils" />
 </div>
 <div class="section" id="hadolint">
-<span id="id13"></span><h3>hadolint<a class="headerlink" href="#hadolint" title="Permalink to this headline"></a></h3>
+<span id="id14"></span><h3>hadolint<a class="headerlink" href="#hadolint" title="Permalink to this headline"></a></h3>
 <p><strong>hadolint</strong> is a Dockerfile linter (see <a class="reference external" href="https://github.com/hadolint/hadolint/">hadolint check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1017,7 +1067,7 @@ You can also skip this configuration and put the configuration file (with the na
 <hr class="docutils" />
 </div>
 <div class="section" id="gixy">
-<span id="id14"></span><h3>Gixy<a class="headerlink" href="#gixy" title="Permalink to this headline"></a></h3>
+<span id="id15"></span><h3>Gixy<a class="headerlink" href="#gixy" title="Permalink to this headline"></a></h3>
 <p><strong>Gixy</strong> is a tool to analyze Nginx configuration (see <a class="reference external" href="https://github.com/yandex/gixy/">Gixy check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1053,7 +1103,7 @@ You can also skip this configuration and put the configuration file (with the na
 <hr class="docutils" />
 </div>
 <div class="section" id="shellcheck">
-<span id="id15"></span><h3>ShellCheck<a class="headerlink" href="#shellcheck" title="Permalink to this headline"></a></h3>
+<span id="id16"></span><h3>ShellCheck<a class="headerlink" href="#shellcheck" title="Permalink to this headline"></a></h3>
 <p><strong>stylelint</strong> is a static analysis tool for shell scripts (see <a class="reference external" href="https://github.com/koalaman/shellcheck/">ShellCheck check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1089,7 +1139,7 @@ You can also skip this configuration and put the configuration file (with the na
 <hr class="docutils" />
 </div>
 <div class="section" id="eslint">
-<span id="id16"></span><h3>ESLint<a class="headerlink" href="#eslint" title="Permalink to this headline"></a></h3>
+<span id="id17"></span><h3>ESLint<a class="headerlink" href="#eslint" title="Permalink to this headline"></a></h3>
 <p><strong>ESLint</strong> is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code
 (see <a class="reference external" href="https://github.com/eslint/eslint/">ESLint check</a>).</p>
 <table class="docutils align-default">
@@ -1127,7 +1177,7 @@ You can also skip this configuration and put the configuration file to the root 
 <hr class="docutils" />
 </div>
 <div class="section" id="typescript-eslint">
-<span id="id17"></span><h3>TypeScript ESLint<a class="headerlink" href="#typescript-eslint" title="Permalink to this headline"></a></h3>
+<span id="id18"></span><h3>TypeScript ESLint<a class="headerlink" href="#typescript-eslint" title="Permalink to this headline"></a></h3>
 <p><strong>TypeScript ESLint</strong> enables ESLint to support TypeScript (see <a class="reference external" href="https://github.com/typescript-eslint/typescript-eslint/">TypeScript ESLint check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1164,7 +1214,7 @@ You can also skip this configuration and put the configuration file to the root 
 <hr class="docutils" />
 </div>
 <div class="section" id="htmlhint">
-<span id="id18"></span><h3>HTMLHint<a class="headerlink" href="#htmlhint" title="Permalink to this headline"></a></h3>
+<span id="id19"></span><h3>HTMLHint<a class="headerlink" href="#htmlhint" title="Permalink to this headline"></a></h3>
 <p><strong>HTMLHint</strong> is the static code analysis tool you need for your HTML (see <a class="reference external" href="https://github.com/htmlhint/HTMLHint/">HTMLHint check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1202,7 +1252,7 @@ IaC package.</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="stylelint">
-<span id="id19"></span><h3>stylelint<a class="headerlink" href="#stylelint" title="Permalink to this headline"></a></h3>
+<span id="id20"></span><h3>stylelint<a class="headerlink" href="#stylelint" title="Permalink to this headline"></a></h3>
 <p><strong>stylelint</strong> is a mighty, modern linter that helps you avoid errors and enforce conventions in your styles
 (see <a class="reference external" href="https://github.com/stylelint/stylelint/">stylelint check</a>).</p>
 <table class="docutils align-default">
@@ -1239,6 +1289,43 @@ You can also skip this configuration and put the configuration file called to th
 </div>
 <hr class="docutils" />
 </div>
+<div class="section" id="checkstyle">
+<span id="id21"></span><h3>Checkstyle<a class="headerlink" href="#checkstyle" title="Permalink to this headline"></a></h3>
+<p><strong>Checkstyle</strong> is a tool for checking Java source code for adherence to a Code Standard or set of validation rules
+(see <a class="reference external" href="https://github.com/checkstyle/checkstyle/">Checkstyle check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">checkstyle</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://checkstyle.org/">Checkstyle docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional XML configuration file (see <a class="reference external" href="https://checkstyle.org/config.html">Checkstyle config</a>).</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
 </div>
 <div class="section" id="cli">
 <span id="iac-scan-runner-cli"></span><h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
@@ -1254,7 +1341,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id20"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id22"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner
