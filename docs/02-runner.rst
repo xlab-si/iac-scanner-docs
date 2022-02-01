@@ -328,6 +328,8 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | IaC Check                     | Target IaC entity          | Enabled (by default)       | Needs configuration        |
 +===============================+============================+============================+============================+
+| `xOpera TOSCA validation`_    | TOSCA                      | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Ansible Lint`_               | Ansible                    | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `TFLint`_                     | Terraform                  | yes                        | no                         |
@@ -364,8 +366,41 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `stylelint`_                  | CSS and other styles       | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Checkstyle`_                 | Java                       | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _xOpera TOSCA validation:
+
+xOpera TOSCA validation
+#######################
+
+**xOpera** project that includes `xOpera TOSCA orchestrator`_ called ``opera`` - a lightweight TOSCA orchestrator that
+comes with CLI that is (apart from all orchestration actions) able to parse and validate `OASIS TOSCA`_ templates and
+CSAR files (see `xOpera validate check`_).
+
++-------------------------+----------------------------+
+| Check ID (from the API) | ``xopera``                 |
++-------------------------+----------------------------+
+| Enabled (by default)    | yes                        |
++-------------------------+----------------------------+
+| Configured (by default) | yes                        |
++-------------------------+----------------------------+
+| Documentation           | `xOpera docs`_             |
++-------------------------+----------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Not supported.
+
+    :Secret:
+
+        Not supported.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -916,6 +951,36 @@ stylelint
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _Checkstyle:
+
+Checkstyle
+##########
+
+**Checkstyle** is a tool for checking Java source code for adherence to a Code Standard or set of validation rules
+(see `Checkstyle check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``checkstyle``                  |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `Checkstyle docs`_              |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional XML configuration file (see `Checkstyle config`_).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
@@ -992,6 +1057,10 @@ Commands
 .. _Swagger UI: https://swagger.io/tools/swagger-ui/
 .. _ReDoc: https://redoc.ly/redoc/
 .. _multipart: https://swagger.io/docs/specification/describing-request-body/multipart-requests/
+.. _xOpera TOSCA orchestrator: https://github.com/xlab-si/xopera-opera
+.. _OASIS TOSCA: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=tosca
+.. _xOpera validate check: https://xlab-si.github.io/xopera-docs/cli.html#validate
+.. _xOpera docs: https://xlab-si.github.io/xopera-docs/
 .. _Ansible Lint check: https://github.com/willthames/ansible-lint/
 .. _Ansible Lint docs: https://ansible-lint.readthedocs.io/en/latest/
 .. _Ansible Lint config: https://ansible-lint.readthedocs.io/en/latest/configuring.html
@@ -1046,6 +1115,9 @@ Commands
 .. _stylelint check: https://github.com/stylelint/stylelint/
 .. _stylelint docs: https://stylelint.io/
 .. _stylelint config: https://stylelint.io/user-guide/configure
+.. _Checkstyle check: https://github.com/checkstyle/checkstyle/
+.. _Checkstyle docs: https://checkstyle.org/
+.. _Checkstyle config: https://checkstyle.org/config.html
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/
