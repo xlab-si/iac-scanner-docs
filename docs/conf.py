@@ -19,7 +19,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u'IaC Scanner'
-copyright = u'2021, XLAB d.o.o., xOpera team'
+copyright = u'2022, XLAB d.o.o., xOpera team'
 author = u'XLAB d.o.o.'
 
 # The short X.Y version
