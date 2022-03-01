@@ -132,7 +132,7 @@ The API endpoints are further described below.
 
 .. _/checks/{check_name}/enable:
 
-.. http:patch:: /checks/{check_name}/enable
+.. http:put:: /checks/{check_name}/enable
 
     IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
     Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
@@ -146,13 +146,13 @@ The API endpoints are further described below.
 
         .. code-tab:: bash
 
-            $ curl -X 'PATCH' 'http://127.0.0.1:8000/checks/snyk/enable'
+            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/snyk/enable'
 
         .. code-tab:: python
 
             import requests
             URL = 'http://127.0.0.1:8000/checks/snyk/enable'
-            response = requests.patch(URL)
+            response = requests.put(URL)
             print(response.json())
 
     **Example response**:
@@ -170,7 +170,7 @@ The API endpoints are further described below.
 
 .. _/checks/{check_name}/disable:
 
-.. http:patch:: /checks/{check_name}/disable
+.. http:put:: /checks/{check_name}/disable
 
     This endpoint can be used to disable a specific IaC check (selected by the *check_name* parameter), which means
     that it will become unavailable for running within IaC scans.
@@ -181,13 +181,13 @@ The API endpoints are further described below.
 
         .. code-tab:: bash
 
-            $ curl -X 'PATCH' 'http://127.0.0.1:8000/checks/pylint/disable'
+            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/pylint/disable'
 
         .. code-tab:: python
 
             import requests
             URL = 'http://127.0.0.1:8000/checks/pylint/enable'
-            response = requests.patch(URL)
+            response = requests.put(URL)
             print(response.json())
 
     **Example response**:
@@ -205,7 +205,7 @@ The API endpoints are further described below.
 
 .. _/checks/{check_name}/configure:
 
-.. http:patch:: /checks/{check_name}/configure
+.. http:put:: /checks/{check_name}/configure
 
     This endpoint is used to configure a specific IaC check (selected by the *check_name* parameter).
     Most IaC checks do not need configuration as they already use their default settings.
@@ -227,7 +227,7 @@ The API endpoints are further described below.
 
         .. code-tab:: bash
 
-            $ curl -X 'PATCH' 'http://127.0.0.1:8000/checks/sonar-scanner/configure' -H 'Content-Type: multipart/form-data' -F 'config_file=@sonar-project.properties;type=text/plain' -F 'secret=56bf-example-token-f007'
+            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/sonar-scanner/configure' -H 'Content-Type: multipart/form-data' -F 'config_file=@sonar-project.properties;type=text/plain' -F 'secret=56bf-example-token-f007'
 
         .. code-tab:: python
 
@@ -237,7 +237,7 @@ The API endpoints are further described below.
                 'config_file': ('sonar-project.properties', open('/path/to/sonar-project.properties', 'rb')),
                 'secret': (None, '56bf-example-token-f007')
             }
-            response = requests.patch(URL, files=multipart_form_data)
+            response = requests.put(URL, files=multipart_form_data)
             print(response.json())
 
     **Example response**:
@@ -288,7 +288,7 @@ The API endpoints are further described below.
                 'iac': ('scaling-example.zip', open('/path/to/scaling-example.zip', 'rb')),
                 'checks': (None, 'bandit,ansible-lint')
             }
-            response = requests.patch(URL, files=multipart_form_data)
+            response = requests.put(URL, files=multipart_form_data)
             print(response.json())
 
     **Example response**:
@@ -368,6 +368,10 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Checkstyle`_                 | Java                       | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `Snyk`_                       | Multiple components        | no                         | yes                        |
++-------------------------------+----------------------------+----------------------------+----------------------------+
+| `SonarScanner`_               | Multiple components        | no                         | yes                        |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 
 The following subsections explain the necessary API actions for each check.
 
@@ -383,7 +387,7 @@ comes with CLI that is (apart from all orchestration actions) able to parse and 
 CSAR files (see `xOpera validate check`_).
 
 +-------------------------+----------------------------+
-| Check ID (from the API) | ``xopera``                 |
+| Check ID (from the API) | ``opera``                  |
 +-------------------------+----------------------------+
 | Enabled (by default)    | yes                        |
 +-------------------------+----------------------------+
@@ -981,6 +985,72 @@ Checkstyle
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _Snyk:
+
+Snyk
+####
+
+**Snyk** helps you find, fix and monitor known vulnerabilities in open source (see `Snyk check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``snyk``                        |
++-------------------------+---------------------------------+
+| Enabled (by default)    | no                              |
++-------------------------+---------------------------------+
+| Configured (by default) | no                              |
++-------------------------+---------------------------------+
+| Documentation           | `Snyk docs`_                    |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Not supported.
+
+    :Secret:
+
+        Requires user to pass his API token to authenticate to Snyk. The API token is generated in the Snyk UI user
+        settings and requires user to set up Snyk account (for more info see `Snyk API token`_).
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _SonarScanner:
+
+SonarScanner
+############
+
+**SonarScanner** is the official scanner used to run code analysis on `SonarQube`_ and `SonarCloud`_
+(see `SonarScanner check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``sonar-scanner``               |
++-------------------------+---------------------------------+
+| Enabled (by default)    | no                              |
++-------------------------+---------------------------------+
+| Configured (by default) | no                              |
++-------------------------+---------------------------------+
+| Documentation           | `SonarScanner docs`_            |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Requires to pass a configuration file (see `SonarScanner config`_), where you must specify your
+        `SonarQube analysis parameters`_.
+        You might also have to create a new organization and project with the proper permissions in the UI.
+
+    :Secret:
+
+        Accepts and optional user token to authenticate to `SonarQube`_ or `SonarCloud`_.
+        The API token is generated in the `SonarQube`_ or `SonarCloud`_ UI user settings and requires user to have an
+        account (for more info see `SonarQube user authentication token`_).
+
+.. Tip:: If you do not wish to supply your user token withing the config file, pass it as a secret in the API.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _IaC Scan Runner CLI:
 
 ===
@@ -1051,7 +1121,13 @@ Commands
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. Note::
+
+    If you have any problems with IaC Scan Runner please have a look at the existing GitHub issues in
+    `xlab-si/iac-scan-runner/issues`_ or open a new one yourself.
+
 .. _xlab-si/iac-scan-runner: https://github.com/xlab-si/iac-scan-runner
+.. _xlab-si/iac-scan-runner/issues: https://github.com/xlab-si/iac-scan-runner/issues
 .. _xscanner/runner: https://hub.docker.com/r/xscanner/runner
 .. _OpenAPI Specification: https://swagger.io/specification/
 .. _Swagger UI: https://swagger.io/tools/swagger-ui/
@@ -1118,6 +1194,16 @@ Commands
 .. _Checkstyle check: https://github.com/checkstyle/checkstyle/
 .. _Checkstyle docs: https://checkstyle.org/
 .. _Checkstyle config: https://checkstyle.org/config.html
+.. _Snyk check: https://github.com/snyk/snyk
+.. _Snyk docs: https://support.snyk.io/hc/en-us
+.. _Snyk API token: https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account
+.. _SonarQube: https://www.sonarqube.org/
+.. _SonarCloud: https://sonarcloud.io/
+.. _SonarScanner check: https://github.com/SonarSource/sonar-scanner-cli/
+.. _SonarScanner docs: https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
+.. _SonarScanner config: https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
+.. _SonarQube user authentication token: https://docs.sonarqube.org/latest/user-guide/user-token/
+.. _SonarQube analysis parameters: https://docs.sonarqube.org/latest/analysis/analysis-parameters/
 .. _Scan Runner CLI: https://pypi.org/project/iac-scan-runner/
 .. _iac-scan-runner: https://pypi.org/project/iac-scan-runner/
 .. _PyPI: https://pypi.org/project/iac-scan-runner/

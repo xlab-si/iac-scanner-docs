@@ -72,6 +72,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#htmlhint">HTMLHint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stylelint">stylelint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#checkstyle">Checkstyle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snyk">Snyk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sonarscanner">SonarScanner</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
@@ -247,9 +249,9 @@ When no filter is specified, the endpoint lists all IaC checks.</p>
 </dd></dl>
 
 <hr class="docutils" />
-<span class="target" id="checks-check-name-enable"></span><dl class="http patch">
-<dt class="sig sig-object http" id="patch--checks-check_name-enable">
-<span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/enable</span></span><a class="headerlink" href="#patch--checks-check_name-enable" title="Permalink to this definition"></a></dt>
+<span class="target" id="checks-check-name-enable"></span><dl class="http put">
+<dt class="sig sig-object http" id="put--checks-check_name-enable">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/enable</span></span><a class="headerlink" href="#put--checks-check_name-enable" title="Permalink to this definition"></a></dt>
 <dd><p>IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
 Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
 additional configuration are disabled and have to be enabled before the scanning.
@@ -257,12 +259,12 @@ This endpoint can be used to enable a specific IaC check (selected by the <em>ch
 it will become available for running within IaC scans.</p>
 <p><strong>Example request</strong>:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PATCH&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -288,19 +290,19 @@ it will become available for running within IaC scans.</p>
 </dd></dl>
 
 <hr class="docutils" />
-<span class="target" id="checks-check-name-disable"></span><dl class="http patch">
-<dt class="sig sig-object http" id="patch--checks-check_name-disable">
-<span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/disable</span></span><a class="headerlink" href="#patch--checks-check_name-disable" title="Permalink to this definition"></a></dt>
+<span class="target" id="checks-check-name-disable"></span><dl class="http put">
+<dt class="sig sig-object http" id="put--checks-check_name-disable">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/disable</span></span><a class="headerlink" href="#put--checks-check_name-disable" title="Permalink to this definition"></a></dt>
 <dd><p>This endpoint can be used to disable a specific IaC check (selected by the <em>check_name</em> parameter), which means
 that it will become unavailable for running within IaC scans.</p>
 <p><strong>Example request</strong>:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-2-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-2-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-2-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PATCH&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/disable&#39;</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-2-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-2-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-2-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/disable&#39;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-2-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-2-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/enable&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -326,12 +328,12 @@ that it will become unavailable for running within IaC scans.</p>
 </dd></dl>
 
 <hr class="docutils" />
-<span class="target" id="checks-check-name-configure"></span><dl class="http patch">
-<dt class="sig sig-object http" id="patch--checks-check_name-configure">
-<span class="sig-name descname"><span class="pre">PATCH</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#patch--checks-check_name-configure" title="Permalink to this definition"></a></dt>
+<span class="target" id="checks-check-name-configure"></span><dl class="http put">
+<dt class="sig sig-object http" id="put--checks-check_name-configure">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#put--checks-check_name-configure" title="Permalink to this definition"></a></dt>
 <dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
 Most IaC checks do not need configuration as they already use their default settings.
-However, some of them - especially the remote service checks (such as <a href="#id24"><span class="problematic" id="id25">`Snyk`_</span></a>) require to be configured before
+However, some of them - especially the remote service checks (such as <a class="reference internal" href="#snyk">Snyk</a>) require to be configured before
 using them within IaC scans.
 Some checks will have to be enabled before they can be configured.
 The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
@@ -344,7 +346,7 @@ Some IaC checks support both the aforementioned request body parameters and some
 The API will warn you in case of any configuration problems.</p>
 <p><strong>Example request</strong>:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-3-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-3-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-3-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PATCH&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/sonar-scanner/configure&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;config_file=@sonar-project.properties;type=text/plain&#39;</span> -F <span class="s1">&#39;secret=56bf-example-token-f007&#39;</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-3-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-3-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-3-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/sonar-scanner/configure&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;config_file=@sonar-project.properties;type=text/plain&#39;</span> -F <span class="s1">&#39;secret=56bf-example-token-f007&#39;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-3-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-3-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
@@ -353,7 +355,7 @@ The API will warn you in case of any configuration problems.</p>
     <span class="s1">&#39;config_file&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;sonar-project.properties&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/sonar-project.properties&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
     <span class="s1">&#39;secret&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;56bf-example-token-f007&#39;</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -413,7 +415,7 @@ After the scanning process the API will return results of all checks (their outp
     <span class="s1">&#39;iac&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;scaling-example.zip&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/scaling-example.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
     <span class="s1">&#39;checks&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;bandit,ansible-lint&#39;</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -574,6 +576,16 @@ supplied IaC go through multiple checks.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#snyk">Snyk</a></p></td>
+<td><p>Multiple components</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sonarscanner">SonarScanner</a></p></td>
+<td><p>Multiple components</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
 </tbody>
 </table>
 <p>The following subsections explain the necessary API actions for each check.</p>
@@ -590,7 +602,7 @@ CSAR files (see <a class="reference external" href="https://xlab-si.github.io/xo
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Check ID (from the API)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">xopera</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">opera</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>Enabled (by default)</p></td>
 <td><p>yes</p></td>
@@ -1326,6 +1338,88 @@ You can also skip this configuration and put the configuration file called to th
 </div>
 <hr class="docutils" />
 </div>
+<div class="section" id="snyk">
+<span id="id22"></span><h3>Snyk<a class="headerlink" href="#snyk" title="Permalink to this headline"></a></h3>
+<p><strong>Snyk</strong> helps you find, fix and monitor known vulnerabilities in open source (see <a class="reference external" href="https://github.com/snyk/snyk">Snyk check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">snyk</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://support.snyk.io/hc/en-us">Snyk docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Not supported.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Requires user to pass his API token to authenticate to Snyk. The API token is generated in the Snyk UI user
+settings and requires user to set up Snyk account (for more info see <a class="reference external" href="https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account">Snyk API token</a>).</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="sonarscanner">
+<span id="id23"></span><h3>SonarScanner<a class="headerlink" href="#sonarscanner" title="Permalink to this headline"></a></h3>
+<p><strong>SonarScanner</strong> is the official scanner used to run code analysis on <a class="reference external" href="https://www.sonarqube.org/">SonarQube</a> and <a class="reference external" href="https://sonarcloud.io/">SonarCloud</a>
+(see <a class="reference external" href="https://github.com/SonarSource/sonar-scanner-cli/">SonarScanner check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sonar-scanner</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/">SonarScanner docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Requires to pass a configuration file (see <a class="reference external" href="https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/">SonarScanner config</a>), where you must specify your
+<a class="reference external" href="https://docs.sonarqube.org/latest/analysis/analysis-parameters/">SonarQube analysis parameters</a>.
+You might also have to create a new organization and project with the proper permissions in the UI.</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Accepts and optional user token to authenticate to <a class="reference external" href="https://www.sonarqube.org/">SonarQube</a> or <a class="reference external" href="https://sonarcloud.io/">SonarCloud</a>.
+The API token is generated in the <a class="reference external" href="https://www.sonarqube.org/">SonarQube</a> or <a class="reference external" href="https://sonarcloud.io/">SonarCloud</a> UI user settings and requires user to have an
+account (for more info see <a class="reference external" href="https://docs.sonarqube.org/latest/user-guide/user-token/">SonarQube user authentication token</a>).</p>
+</dd>
+</dl>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you do not wish to supply your user token withing the config file, pass it as a secret in the API.</p>
+</div>
+<hr class="docutils" />
+</div>
 </div>
 <div class="section" id="cli">
 <span id="iac-scan-runner-cli"></span><h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
@@ -1341,7 +1435,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id22"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id24"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner
@@ -1458,6 +1552,11 @@ The simplest way to test <code class="docutils literal notranslate"><span class=
 </div>
 </div>
 <hr class="docutils" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have any problems with IaC Scan Runner please have a look at the existing GitHub issues in
+<a class="reference external" href="https://github.com/xlab-si/iac-scan-runner/issues">xlab-si/iac-scan-runner/issues</a> or open a new one yourself.</p>
+</div>
 </div>
 </div>
 </div>
