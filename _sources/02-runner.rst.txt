@@ -306,6 +306,7 @@ The API endpoints are further described below.
           }
         }
 
+    :param string scan_response_type: JSON (default) or YAML scan response
     :form iac: IaC file (currently limited to *zip* or *tar*)
     :form checks: optional array of the selected checks
     :statuscode 200: Successful Response
@@ -1047,7 +1048,7 @@ SonarScanner
         The API token is generated in the `SonarQube`_ or `SonarCloud`_ UI user settings and requires user to have an
         account (for more info see `SonarQube user authentication token`_).
 
-.. Tip:: If you do not wish to supply your user token withing the config file, pass it as a secret in the API.
+.. Tip:: If you do not wish to supply your user token within the config file, pass it as a secret in the API.
 
 ------------------------------------------------------------------------------------------------------------------------
 

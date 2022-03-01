@@ -434,14 +434,19 @@ After the scanning process the API will return results of all checks (their outp
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Form Parameters</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_response_type</strong> (<em>string</em>) – JSON (default) or YAML scan response</p></li>
+</ul>
+</dd>
+<dt class="field-even">Form Parameters</dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>iac</strong> – IaC file (currently limited to <em>zip</em> or <em>tar</em>)</p></li>
 <li><p><strong>checks</strong> – optional array of the selected checks</p></li>
 </ul>
 </dd>
-<dt class="field-even">Status Codes</dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
 <li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
 <li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
@@ -1416,7 +1421,7 @@ account (for more info see <a class="reference external" href="https://docs.sona
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If you do not wish to supply your user token withing the config file, pass it as a secret in the API.</p>
+<p>If you do not wish to supply your user token within the config file, pass it as a secret in the API.</p>
 </div>
 <hr class="docutils" />
 </div>
