@@ -46,11 +46,6 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="01-intro.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">IaC Scan Runner</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rest-api">REST API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#scanner-and-check-reference">Scanner and check reference</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#xopera-tosca-validation">xOpera TOSCA validation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ansible-lint">Ansible Lint</a></li>
@@ -74,6 +69,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#checkstyle">Checkstyle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snyk">Snyk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sonarscanner">SonarScanner</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rest-api">REST API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a><ul>
@@ -124,343 +124,6 @@
 <p>The <strong>IaC Scan Runner</strong> is a REST API service used to scan IaC (Infrastructure as Code) package by performing various
 checks in order to find possible errors and improvements.
 The IaC Scan Runner’s source code is available in <a class="reference external" href="https://github.com/xlab-si/iac-scan-runner">xlab-si/iac-scan-runner</a> GitHub repository.</p>
-<div class="section" id="rest-api">
-<span id="iac-scan-runner-rest-api"></span><h2>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline"></a></h2>
-<p>This section focuses on the <strong>IaC Scan Runner REST API</strong> service.</p>
-<div class="section" id="installation">
-<span id="iac-scan-runner-rest-api-installation"></span><h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h3>
-<p>You can run the REST API using a public <a class="reference external" href="https://hub.docker.com/r/xscanner/runner">xscanner/runner</a> Docker image as follows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># run IaC Scan Runner REST API in a Docker container and</span>
-<span class="c1"># navigate to localhost:8080/swagger or localhost:8080/redoc</span>
-docker run --name iac-scan-runner -p <span class="m">8080</span>:80 xscanner/runner
-</pre></div>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Other methods of running are also explained in <a class="reference external" href="https://github.com/xlab-si/iac-scan-runner">xlab-si/iac-scan-runner</a> GitHub repository.</p>
-</div>
-</div>
-<div class="section" id="usage">
-<span id="iac-scan-runner-rest-api-usage"></span><h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h3>
-<p>After the setup you will see that the <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a> and interactive <a class="reference external" href="https://swagger.io/tools/swagger-ui/">Swagger UI</a> API documentation are
-available on <code class="docutils literal notranslate"><span class="pre">/swagger</span></code>, whereas <a class="reference external" href="https://redoc.ly/redoc/">ReDoc</a> generated API reference documentation is accessible on <code class="docutils literal notranslate"><span class="pre">/redoc</span></code>.
-You can also retrieve an OpenAPI document that conforms to the <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a> as JSON file on
-<code class="docutils literal notranslate"><span class="pre">/openapi.json</span></code> or as YAML file on <code class="docutils literal notranslate"><span class="pre">/openapi.yaml</span></code> (or <code class="docutils literal notranslate"><span class="pre">/openapi.yml</span></code>).</p>
-<p>The IaC Scan Runner API can be used to interact with the main IaC inspection component and initialize IaC scans.
-The API includes various IaC checks that can be filtered and configured.
-User can choose to execute all or just the selected checks as a part of one IaC scan.
-After the scanning process the API will return all the check results.</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 55%" />
-<col style="width: 45%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>REST API endpoint</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#checks">/checks</a></p></td>
-<td><p>Retrieve and filter checks</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#checks-check-name-enable">/checks/{check_name}/enable</a></p></td>
-<td><p>Enable check for running</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#checks-check-name-disable">/checks/{check_name}/disable</a></p></td>
-<td><p>Disable check for running</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a></p></td>
-<td><p>Configure check</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scan">/scan</a></p></td>
-<td><p>Initiate IaC scan</p></td>
-</tr>
-</tbody>
-</table>
-<p>The API endpoints are further described below.</p>
-<hr class="docutils" />
-<span class="target" id="checks"></span><dl class="http get">
-<dt class="sig sig-object http" id="get--checks">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/checks</span></span><a class="headerlink" href="#get--checks" title="Permalink to this definition"></a></dt>
-<dd><p>This endpoint lets you retrieve and filter the supported IaC checks.
-You can filter checks by their keynames (use the <em>keyword</em> request parameter) and find out whether they are already
-enabled (set the <em>enabled</em> parameter) or configured (set the <em>configured</em> parameter).
-Checks can also be filtered by their target entity (set the <em>target_entity_type</em> parameter) - here we have three
-types of checks - IaC (they only check the code), component (they check IaC requirements and dependencies in order
-to find vulnerabilities) and check that are both IaC and component.
-Each IaC check in the API has its unique name so that it can be distinguished from other checks.
-When no filter is specified, the endpoint lists all IaC checks.</p>
-<p><strong>Example request</strong>:</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;GET&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks?keyword=Terraform&amp;enabled=true&#39;</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks?keyword=Terraform&amp;enabled=true&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</pre></div>
-</div>
-</div></div>
-<p><strong>Example response</strong>:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tflint&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A Pluggable Terraform Linter&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;configured&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IaC&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tfsec&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Security scanner for your Terraform code&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;configured&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IaC&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;terrascan&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Terrascan is a static code analyzer for IaC (defaults to scanning Terraform)&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;configured&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IaC&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">]</span><span class="w"></span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Query Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>keyword</strong> (<em>string</em>) – optional keyword from check name or description</p></li>
-<li><p><strong>enabled</strong> (<em>boolean</em>) – search for checks that are enabled or not</p></li>
-<li><p><strong>configured</strong> (<em>string</em>) – search for checks that are configured or not</p></li>
-<li><p><strong>target_entity_type</strong> (<em>string</em>) – search by target entity (one of <code class="docutils literal notranslate"><span class="pre">IaC</span></code>, <code class="docutils literal notranslate"><span class="pre">component</span></code>, <code class="docutils literal notranslate"><span class="pre">IaC</span> <span class="pre">and</span> <span class="pre">component</span></code>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Status Codes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> – Bad Request</p></li>
-<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<hr class="docutils" />
-<span class="target" id="checks-check-name-enable"></span><dl class="http put">
-<dt class="sig sig-object http" id="put--checks-check_name-enable">
-<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/enable</span></span><a class="headerlink" href="#put--checks-check_name-enable" title="Permalink to this definition"></a></dt>
-<dd><p>IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
-Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
-additional configuration are disabled and have to be enabled before the scanning.
-This endpoint can be used to enable a specific IaC check (selected by the <em>check_name</em> parameter), which means that
-it will become available for running within IaC scans.</p>
-<p><strong>Example request</strong>:</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</pre></div>
-</div>
-</div></div>
-<p><strong>Example response</strong>:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Check: snyk is now enabled and available to use.&quot;</span><span class="w"></span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>check_name</strong> (<em>string</em>) – check that you want to enable for running</p></li>
-</ul>
-</dd>
-<dt class="field-even">Status Codes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
-<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<hr class="docutils" />
-<span class="target" id="checks-check-name-disable"></span><dl class="http put">
-<dt class="sig sig-object http" id="put--checks-check_name-disable">
-<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/disable</span></span><a class="headerlink" href="#put--checks-check_name-disable" title="Permalink to this definition"></a></dt>
-<dd><p>This endpoint can be used to disable a specific IaC check (selected by the <em>check_name</em> parameter), which means
-that it will become unavailable for running within IaC scans.</p>
-<p><strong>Example request</strong>:</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-2-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-2-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-2-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/disable&#39;</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-2-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-2-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/enable&#39;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</pre></div>
-</div>
-</div></div>
-<p><strong>Example response</strong>:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Check: pylint is now disabled and cannot be used.&quot;</span><span class="w"></span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>check_name</strong> (<em>string</em>) – check that you want to disable for running</p></li>
-</ul>
-</dd>
-<dt class="field-even">Status Codes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
-<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<hr class="docutils" />
-<span class="target" id="checks-check-name-configure"></span><dl class="http put">
-<dt class="sig sig-object http" id="put--checks-check_name-configure">
-<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#put--checks-check_name-configure" title="Permalink to this definition"></a></dt>
-<dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
-Most IaC checks do not need configuration as they already use their default settings.
-However, some of them - especially the remote service checks (such as <a class="reference internal" href="#snyk">Snyk</a>) require to be configured before
-using them within IaC scans.
-Some checks will have to be enabled before they can be configured.
-The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
-The former (<em>config_file</em>) can be used to pass a check configuration file (which is supported by almost every
-check) that is specific to every check and will override the default check settings.
-The latter (<em>secret</em>) is meant for passing sensitive data such as passwords, API keys, tokens, etc.
-These secrets are often used to configure the remote service checks - usually to authenticate the user via some
-token that has been generated in the remote service user profile settings.
-Some IaC checks support both the aforementioned request body parameters and some support one of them or none.
-The API will warn you in case of any configuration problems.</p>
-<p><strong>Example request</strong>:</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-3-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-3-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-3-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/sonar-scanner/configure&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;config_file=@sonar-project.properties;type=text/plain&#39;</span> -F <span class="s1">&#39;secret=56bf-example-token-f007&#39;</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-3-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-3-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/sonar-scanner/configure&#39;</span>
-<span class="n">multipart_form_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;config_file&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;sonar-project.properties&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/sonar-project.properties&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
-    <span class="s1">&#39;secret&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;56bf-example-token-f007&#39;</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</pre></div>
-</div>
-</div></div>
-<p><strong>Example response</strong>:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Check: sonar-scanner has been configured successfully.&quot;</span><span class="w"></span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>check_name</strong> (<em>string</em>) – check that you want to configure before scanning</p></li>
-</ul>
-</dd>
-<dt class="field-even">Form Parameters</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>config_file</strong> – optional check configuration file</p></li>
-<li><p><strong>secret</strong> – optional secret for configuration (password, API token, etc.)</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Status Codes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
-<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Be careful not to expose your secrets directly in your IaC.</p>
-</div>
-<hr class="docutils" />
-<span class="target" id="scan"></span><dl class="http post">
-<dt class="sig sig-object http" id="post--scan">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/scan</span></span><a class="headerlink" href="#post--scan" title="Permalink to this definition"></a></dt>
-<dd><p>This is the main endpoint that is used to scan the IaC and gather the results from the executed IaC checks.
-The request body is treated as <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> (<em>multipart/form-data</em> type) and has two parameters.
-The first one is <em>iac</em> and is required.
-Here, the user passes his (compressed) IaC package (currently limited to <em>zip</em> or <em>tar</em>).
-The second parameter is <em>checks</em> and is an optional array of checks, which the user wants to executed as a part of
-his IaC scan.
-The IaC checks are selected by their unique names. If the user does not specify that field, all the enabled checks
-are executed.
-The API will warn you if there are any nonexistent, disabled or un-configured checks that you wanted to use.
-After the scanning process the API will return results of all checks (their outputs and return codes).</p>
-<p><strong>Example request</strong>:</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-4-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-4-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-4-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-4-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-4-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;POST&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/scan&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;iac=@scaling-example.zip&#39;</span> -F <span class="s1">&#39;checks=bandit,ansible-lint&#39;</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-4-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-4-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/scan&#39;</span>
-<span class="n">multipart_form_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;iac&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;scaling-example.zip&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/scaling-example.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
-    <span class="s1">&#39;checks&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;bandit,ansible-lint&#39;</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</pre></div>
-</div>
-</div></div>
-<p><strong>Example response</strong>:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;bandit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None\n[main]\tINFO\trunning on Python 3.8.10\nRun started:2021-08-25 11:23:29.960356\n\nTest results:\n\tNo issues identified.\n\nCode scanned:\n\tTotal lines of code: 0\n\tTotal lines skipped (#nosec): 0\n\nRun metrics:\n\tTotal issues (by severity):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\n\tTotal issues (by confidence):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\nFiles skipped (0):\n&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;rc&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;ansible-lint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;WARNING  Listing 6 violation(s) that are fatal\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:45: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:62: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\nYou can skip specific rules or tags by adding them to your configuration file:\n\u001b[2m# .ansible-lint\u001b[0m\n\u001b[94mwarn_list\u001b[0m:  \u001b[2m# or &#39;skip_list&#39; to silence them completely\u001b[0m\n  - yaml  \u001b[2m# Violations reported by yamllint\u001b[0m\n\nFinished with \u001b[1;36m6\u001b[0m \u001b[1;35mfailure\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m, \u001b[1;36m0\u001b[0m \u001b[1;35mwarning\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m on \u001b[1;36m9\u001b[0m files.\n&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;rc&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scan_response_type</strong> (<em>string</em>) – JSON (default) or YAML scan response</p></li>
-</ul>
-</dd>
-<dt class="field-even">Form Parameters</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>iac</strong> – IaC file (currently limited to <em>zip</em> or <em>tar</em>)</p></li>
-<li><p><strong>checks</strong> – optional array of the selected checks</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Status Codes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
-<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All API endpoints try to use JSON responses.</p>
-</div>
-</div>
-</div>
 <div class="section" id="scanner-and-check-reference">
 <span id="iac-scanner-and-check-reference"></span><h2>Scanner and check reference<a class="headerlink" href="#scanner-and-check-reference" title="Permalink to this headline"></a></h2>
 <p>The scanner is the main component of the IaC Scan Runner and it initiates the scanning process, which makes the
@@ -1424,6 +1087,348 @@ account (for more info see <a class="reference external" href="https://docs.sona
 <p>If you do not wish to supply your user token within the config file, pass it as a secret in the API.</p>
 </div>
 <hr class="docutils" />
+</div>
+</div>
+<div class="section" id="rest-api">
+<span id="iac-scan-runner-rest-api"></span><h2>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline"></a></h2>
+<p>This section focuses on the <strong>IaC Scan Runner REST API</strong> service.</p>
+<div class="section" id="installation">
+<span id="iac-scan-runner-rest-api-installation"></span><h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h3>
+<p>You can run the REST API using a public <a class="reference external" href="https://hub.docker.com/r/xscanner/runner">xscanner/runner</a> Docker image as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># run IaC Scan Runner REST API in a Docker container and</span>
+<span class="c1"># navigate to localhost:8080/swagger or localhost:8080/redoc</span>
+docker run --name iac-scan-runner -p <span class="m">8080</span>:80 xscanner/runner
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Other methods of running are also explained in <a class="reference external" href="https://github.com/xlab-si/iac-scan-runner">xlab-si/iac-scan-runner</a> GitHub repository.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Docker image is large because we use many different tools for scanning.
+For the future releases. we will try to shrink it down as much as possible.</p>
+</div>
+</div>
+<div class="section" id="usage">
+<span id="iac-scan-runner-rest-api-usage"></span><h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h3>
+<p>After the setup you will see that the <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a> and interactive <a class="reference external" href="https://swagger.io/tools/swagger-ui/">Swagger UI</a> API documentation are
+available on <code class="docutils literal notranslate"><span class="pre">/swagger</span></code>, whereas <a class="reference external" href="https://redoc.ly/redoc/">ReDoc</a> generated API reference documentation is accessible on <code class="docutils literal notranslate"><span class="pre">/redoc</span></code>.
+You can also retrieve an OpenAPI document that conforms to the <a class="reference external" href="https://swagger.io/specification/">OpenAPI Specification</a> as JSON file on
+<code class="docutils literal notranslate"><span class="pre">/openapi.json</span></code> or as YAML file on <code class="docutils literal notranslate"><span class="pre">/openapi.yaml</span></code> (or <code class="docutils literal notranslate"><span class="pre">/openapi.yml</span></code>).</p>
+<p>The IaC Scan Runner API can be used to interact with the main IaC inspection component and initialize IaC scans.
+The API includes various IaC checks that can be filtered and configured.
+User can choose to execute all or just the selected checks as a part of one IaC scan.
+After the scanning process the API will return all the check results.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>REST API endpoint</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#checks">/checks</a></p></td>
+<td><p>Retrieve and filter checks</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#checks-check-name-enable">/checks/{check_name}/enable</a></p></td>
+<td><p>Enable check for running</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#checks-check-name-disable">/checks/{check_name}/disable</a></p></td>
+<td><p>Disable check for running</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a></p></td>
+<td><p>Configure check</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#scan">/scan</a></p></td>
+<td><p>Initiate IaC scan</p></td>
+</tr>
+</tbody>
+</table>
+<p>The API endpoints are further described below.</p>
+<hr class="docutils" />
+<span class="target" id="checks"></span><dl class="http get">
+<dt class="sig sig-object http" id="get--checks">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/checks</span></span><a class="headerlink" href="#get--checks" title="Permalink to this definition"></a></dt>
+<dd><p>This endpoint lets you retrieve and filter the supported IaC checks.
+You can filter checks by their keynames (use the <em>keyword</em> request parameter) and find out whether they are already
+enabled (set the <em>enabled</em> parameter) or configured (set the <em>configured</em> parameter).
+Checks can also be filtered by their target entity (set the <em>target_entity_type</em> parameter) - here we have three
+types of checks - IaC (they only check the code), component (they check IaC requirements and dependencies in order
+to find vulnerabilities) and check that are both IaC and component.
+Each IaC check in the API has its unique name so that it can be distinguished from other checks.
+When no filter is specified, the endpoint lists all IaC checks.</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;GET&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks?keyword=Terraform&amp;enabled=true&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks?keyword=Terraform&amp;enabled=true&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tflint&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A Pluggable Terraform Linter&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;configured&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IaC&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tfsec&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Security scanner for your Terraform code&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;configured&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IaC&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;terrascan&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Terrascan is a static code analyzer for IaC (defaults to scanning Terraform)&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;configured&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;target_entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IaC&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword</strong> (<em>string</em>) – optional keyword from check name or description</p></li>
+<li><p><strong>enabled</strong> (<em>boolean</em>) – search for checks that are enabled or not</p></li>
+<li><p><strong>configured</strong> (<em>string</em>) – search for checks that are configured or not</p></li>
+<li><p><strong>target_entity_type</strong> (<em>string</em>) – search by target entity (one of <code class="docutils literal notranslate"><span class="pre">IaC</span></code>, <code class="docutils literal notranslate"><span class="pre">component</span></code>, <code class="docutils literal notranslate"><span class="pre">IaC</span> <span class="pre">and</span> <span class="pre">component</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="checks-check-name-enable"></span><dl class="http put">
+<dt class="sig sig-object http" id="put--checks-check_name-enable">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/enable</span></span><a class="headerlink" href="#put--checks-check_name-enable" title="Permalink to this definition"></a></dt>
+<dd><p>IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
+Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
+additional configuration are disabled and have to be enabled before the scanning.
+This endpoint can be used to enable a specific IaC check (selected by the <em>check_name</em> parameter), which means that
+it will become available for running within IaC scans.</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/snyk/enable&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Check: snyk is now enabled and available to use.&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>check_name</strong> (<em>string</em>) – check that you want to enable for running</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="checks-check-name-disable"></span><dl class="http put">
+<dt class="sig sig-object http" id="put--checks-check_name-disable">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/disable</span></span><a class="headerlink" href="#put--checks-check_name-disable" title="Permalink to this definition"></a></dt>
+<dd><p>This endpoint can be used to disable a specific IaC check (selected by the <em>check_name</em> parameter), which means
+that it will become unavailable for running within IaC scans.</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-2-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-2-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-2-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-2-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/disable&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-2-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/pylint/enable&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Check: pylint is now disabled and cannot be used.&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>check_name</strong> (<em>string</em>) – check that you want to disable for running</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="checks-check-name-configure"></span><dl class="http put">
+<dt class="sig sig-object http" id="put--checks-check_name-configure">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/checks/{check_name}/configure</span></span><a class="headerlink" href="#put--checks-check_name-configure" title="Permalink to this definition"></a></dt>
+<dd><p>This endpoint is used to configure a specific IaC check (selected by the <em>check_name</em> parameter).
+Most IaC checks do not need configuration as they already use their default settings.
+However, some of them - especially the remote service checks (such as <a class="reference internal" href="#snyk">Snyk</a>) require to be configured before
+using them within IaC scans.
+Some checks will have to be enabled before they can be configured.
+The configuration of IaC check takes two optional <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> request body parameters - <em>config_file</em> and <em>secret</em>.
+The former (<em>config_file</em>) can be used to pass a check configuration file (which is supported by almost every
+check) that is specific to every check and will override the default check settings.
+The latter (<em>secret</em>) is meant for passing sensitive data such as passwords, API keys, tokens, etc.
+These secrets are often used to configure the remote service checks - usually to authenticate the user via some
+token that has been generated in the remote service user profile settings.
+Some IaC checks support both the aforementioned request body parameters and some support one of them or none.
+The API will warn you in case of any configuration problems.</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-3-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-3-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-3-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-3-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;PUT&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/sonar-scanner/configure&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;config_file=@sonar-project.properties;type=text/plain&#39;</span> -F <span class="s1">&#39;secret=56bf-example-token-f007&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-3-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/checks/sonar-scanner/configure&#39;</span>
+<span class="n">multipart_form_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;config_file&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;sonar-project.properties&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/sonar-project.properties&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
+    <span class="s1">&#39;secret&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;56bf-example-token-f007&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Check: sonar-scanner has been configured successfully.&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>check_name</strong> (<em>string</em>) – check that you want to configure before scanning</p></li>
+</ul>
+</dd>
+<dt class="field-even">Form Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>config_file</strong> – optional check configuration file</p></li>
+<li><p><strong>secret</strong> – optional secret for configuration (password, API token, etc.)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful not to expose your secrets directly in your IaC.</p>
+</div>
+<hr class="docutils" />
+<span class="target" id="scan"></span><dl class="http post">
+<dt class="sig sig-object http" id="post--scan">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/scan</span></span><a class="headerlink" href="#post--scan" title="Permalink to this definition"></a></dt>
+<dd><p>This is the main endpoint that is used to scan the IaC and gather the results from the executed IaC checks.
+The request body is treated as <a class="reference external" href="https://swagger.io/docs/specification/describing-request-body/multipart-requests/">multipart</a> (<em>multipart/form-data</em> type) and has two parameters.
+The first one is <em>iac</em> and is required.
+Here, the user passes his (compressed) IaC package (currently limited to <em>zip</em> or <em>tar</em>).
+The second parameter is <em>checks</em> and is an optional array of checks, which the user wants to executed as a part of
+his IaC scan.
+The IaC checks are selected by their unique names. If the user does not specify that field, all the enabled checks
+are executed.
+The API will warn you if there are any nonexistent, disabled or un-configured checks that you wanted to use.
+After the scanning process the API will return results of all checks (their outputs and return codes).</p>
+<p><strong>Example request</strong>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-QmFzaA==" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-4-QmFzaA==" name="QmFzaA==" role="tab" tabindex="0">Bash</button><button aria-controls="panel-4-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-4-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-4-QmFzaA==" class="sphinx-tabs-panel code-tab group-tab" id="panel-4-QmFzaA==" name="QmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -X <span class="s1">&#39;POST&#39;</span> <span class="s1">&#39;http://127.0.0.1:8000/scan&#39;</span> -H <span class="s1">&#39;Content-Type: multipart/form-data&#39;</span> -F <span class="s1">&#39;iac=@scaling-example.zip&#39;</span> -F <span class="s1">&#39;checks=bandit,ansible-lint&#39;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-4-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/scan&#39;</span>
+<span class="n">multipart_form_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;iac&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;scaling-example.zip&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/scaling-example.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)),</span>
+    <span class="s1">&#39;checks&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;bandit,ansible-lint&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">multipart_form_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;bandit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None\n[main]\tINFO\trunning on Python 3.8.10\nRun started:2021-08-25 11:23:29.960356\n\nTest results:\n\tNo issues identified.\n\nCode scanned:\n\tTotal lines of code: 0\n\tTotal lines skipped (#nosec): 0\n\nRun metrics:\n\tTotal issues (by severity):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\n\tTotal issues (by confidence):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\nFiles skipped (0):\n&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;rc&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;ansible-lint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;WARNING  Listing 6 violation(s) that are fatal\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:45: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:62: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\nYou can skip specific rules or tags by adding them to your configuration file:\n\u001b[2m# .ansible-lint\u001b[0m\n\u001b[94mwarn_list\u001b[0m:  \u001b[2m# or &#39;skip_list&#39; to silence them completely\u001b[0m\n  - yaml  \u001b[2m# Violations reported by yamllint\u001b[0m\n\nFinished with \u001b[1;36m6\u001b[0m \u001b[1;35mfailure\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m, \u001b[1;36m0\u001b[0m \u001b[1;35mwarning\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m on \u001b[1;36m9\u001b[0m files.\n&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;rc&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_response_type</strong> (<em>string</em>) – JSON (default) or YAML scan response</p></li>
+</ul>
+</dd>
+<dt class="field-even">Form Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>iac</strong> – IaC file (currently limited to <em>zip</em> or <em>tar</em>)</p></li>
+<li><p><strong>checks</strong> – optional array of the selected checks</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a></span> – Bad Request</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All API endpoints try to use JSON responses.</p>
+</div>
 </div>
 </div>
 <div class="section" id="cli">

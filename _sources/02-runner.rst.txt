@@ -8,313 +8,6 @@ The **IaC Scan Runner** is a REST API service used to scan IaC (Infrastructure a
 checks in order to find possible errors and improvements.
 The IaC Scan Runner's source code is available in `xlab-si/iac-scan-runner`_ GitHub repository.
 
-.. _IaC Scan Runner REST API:
-
-========
-REST API
-========
-
-This section focuses on the **IaC Scan Runner REST API** service.
-
-.. _IaC Scan Runner REST API installation:
-
-Installation
-############
-
-You can run the REST API using a public `xscanner/runner`_ Docker image as follows:
-
-.. code-block:: bash
-
-    # run IaC Scan Runner REST API in a Docker container and
-    # navigate to localhost:8080/swagger or localhost:8080/redoc
-    docker run --name iac-scan-runner -p 8080:80 xscanner/runner
-
-.. Tip:: Other methods of running are also explained in `xlab-si/iac-scan-runner`_ GitHub repository.
-
-.. _IaC Scan Runner REST API usage:
-
-Usage
-#####
-
-After the setup you will see that the `OpenAPI Specification`_ and interactive `Swagger UI`_ API documentation are
-available on ``/swagger``, whereas `ReDoc`_ generated API reference documentation is accessible on ``/redoc``.
-You can also retrieve an OpenAPI document that conforms to the `OpenAPI Specification`_ as JSON file on
-``/openapi.json`` or as YAML file on ``/openapi.yaml`` (or ``/openapi.yml``).
-
-The IaC Scan Runner API can be used to interact with the main IaC inspection component and initialize IaC scans.
-The API includes various IaC checks that can be filtered and configured.
-User can choose to execute all or just the selected checks as a part of one IaC scan.
-After the scanning process the API will return all the check results.
-
-+-------------------------------------------+-----------------------------------+
-| REST API endpoint                         | Description                       |
-+===========================================+===================================+
-| `/checks`_                                | Retrieve and filter checks        |
-+-------------------------------------------+-----------------------------------+
-| `/checks/{check_name}/enable`_            | Enable check for running          |
-+-------------------------------------------+-----------------------------------+
-| `/checks/{check_name}/disable`_           | Disable check for running         |
-+-------------------------------------------+-----------------------------------+
-| `/checks/{check_name}/configure`_         | Configure check                   |
-+-------------------------------------------+-----------------------------------+
-| `/scan`_                                  | Initiate IaC scan                 |
-+-------------------------------------------+-----------------------------------+
-
-The API endpoints are further described below.
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _/checks:
-
-.. http:get:: /checks
-
-    This endpoint lets you retrieve and filter the supported IaC checks.
-    You can filter checks by their keynames (use the *keyword* request parameter) and find out whether they are already
-    enabled (set the *enabled* parameter) or configured (set the *configured* parameter).
-    Checks can also be filtered by their target entity (set the *target_entity_type* parameter) - here we have three
-    types of checks - IaC (they only check the code), component (they check IaC requirements and dependencies in order
-    to find vulnerabilities) and check that are both IaC and component.
-    Each IaC check in the API has its unique name so that it can be distinguished from other checks.
-    When no filter is specified, the endpoint lists all IaC checks.
-
-    **Example request**:
-
-    .. tabs::
-
-        .. code-tab:: bash
-
-            $ curl -X 'GET' 'http://127.0.0.1:8000/checks?keyword=Terraform&enabled=true'
-
-        .. code-tab:: python
-
-            import requests
-            URL = 'http://127.0.0.1:8000/checks?keyword=Terraform&enabled=true'
-            response = requests.get(URL)
-            print(response.json())
-
-    **Example response**:
-
-    .. sourcecode:: json
-
-        [
-          {
-            "name": "tflint",
-            "description": "A Pluggable Terraform Linter",
-            "enabled": true,
-            "configured": true,
-            "target_entity_type": "IaC"
-          },
-          {
-            "name": "tfsec",
-            "description": "Security scanner for your Terraform code",
-            "enabled": true,
-            "configured": true,
-            "target_entity_type": "IaC"
-          },
-          {
-            "name": "terrascan",
-            "description": "Terrascan is a static code analyzer for IaC (defaults to scanning Terraform)",
-            "enabled": true,
-            "configured": true,
-            "target_entity_type": "IaC"
-          }
-        ]
-
-    :query string keyword: optional keyword from check name or description
-    :query boolean enabled: search for checks that are enabled or not
-    :query string configured: search for checks that are configured or not
-    :query string target_entity_type: search by target entity (one of ``IaC``, ``component``, ``IaC and component``)
-    :statuscode 200: Successful Response
-    :statuscode 404: Bad Request
-    :statuscode 422: Validation Error
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _/checks/{check_name}/enable:
-
-.. http:put:: /checks/{check_name}/enable
-
-    IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
-    Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
-    additional configuration are disabled and have to be enabled before the scanning.
-    This endpoint can be used to enable a specific IaC check (selected by the *check_name* parameter), which means that
-    it will become available for running within IaC scans.
-
-    **Example request**:
-
-    .. tabs::
-
-        .. code-tab:: bash
-
-            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/snyk/enable'
-
-        .. code-tab:: python
-
-            import requests
-            URL = 'http://127.0.0.1:8000/checks/snyk/enable'
-            response = requests.put(URL)
-            print(response.json())
-
-    **Example response**:
-
-    .. sourcecode:: json
-
-        "Check: snyk is now enabled and available to use."
-
-    :param string check_name: check that you want to enable for running
-    :statuscode 200: Successful Response
-    :statuscode 400: Bad Request
-    :statuscode 422: Validation Error
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _/checks/{check_name}/disable:
-
-.. http:put:: /checks/{check_name}/disable
-
-    This endpoint can be used to disable a specific IaC check (selected by the *check_name* parameter), which means
-    that it will become unavailable for running within IaC scans.
-
-    **Example request**:
-
-    .. tabs::
-
-        .. code-tab:: bash
-
-            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/pylint/disable'
-
-        .. code-tab:: python
-
-            import requests
-            URL = 'http://127.0.0.1:8000/checks/pylint/enable'
-            response = requests.put(URL)
-            print(response.json())
-
-    **Example response**:
-
-    .. sourcecode:: json
-
-        "Check: pylint is now disabled and cannot be used."
-
-    :param string check_name: check that you want to disable for running
-    :statuscode 200: Successful Response
-    :statuscode 400: Bad Request
-    :statuscode 422: Validation Error
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _/checks/{check_name}/configure:
-
-.. http:put:: /checks/{check_name}/configure
-
-    This endpoint is used to configure a specific IaC check (selected by the *check_name* parameter).
-    Most IaC checks do not need configuration as they already use their default settings.
-    However, some of them - especially the remote service checks (such as `Snyk`_) require to be configured before
-    using them within IaC scans.
-    Some checks will have to be enabled before they can be configured.
-    The configuration of IaC check takes two optional `multipart`_ request body parameters - *config_file* and *secret*.
-    The former (*config_file*) can be used to pass a check configuration file (which is supported by almost every
-    check) that is specific to every check and will override the default check settings.
-    The latter (*secret*) is meant for passing sensitive data such as passwords, API keys, tokens, etc.
-    These secrets are often used to configure the remote service checks - usually to authenticate the user via some
-    token that has been generated in the remote service user profile settings.
-    Some IaC checks support both the aforementioned request body parameters and some support one of them or none.
-    The API will warn you in case of any configuration problems.
-
-    **Example request**:
-
-    .. tabs::
-
-        .. code-tab:: bash
-
-            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/sonar-scanner/configure' -H 'Content-Type: multipart/form-data' -F 'config_file=@sonar-project.properties;type=text/plain' -F 'secret=56bf-example-token-f007'
-
-        .. code-tab:: python
-
-            import requests
-            URL = 'http://127.0.0.1:8000/checks/sonar-scanner/configure'
-            multipart_form_data = {
-                'config_file': ('sonar-project.properties', open('/path/to/sonar-project.properties', 'rb')),
-                'secret': (None, '56bf-example-token-f007')
-            }
-            response = requests.put(URL, files=multipart_form_data)
-            print(response.json())
-
-    **Example response**:
-
-    .. sourcecode:: json
-
-        "Check: sonar-scanner has been configured successfully."
-
-    :param string check_name: check that you want to configure before scanning
-    :form config_file: optional check configuration file
-    :form secret: optional secret for configuration (password, API token, etc.)
-    :statuscode 200: Successful Response
-    :statuscode 400: Bad Request
-    :statuscode 422: Validation Error
-
-.. Warning:: Be careful not to expose your secrets directly in your IaC.
-
-------------------------------------------------------------------------------------------------------------------------
-
-.. _/scan:
-
-.. http:post:: /scan
-
-    This is the main endpoint that is used to scan the IaC and gather the results from the executed IaC checks.
-    The request body is treated as `multipart`_ (*multipart/form-data* type) and has two parameters.
-    The first one is *iac* and is required.
-    Here, the user passes his (compressed) IaC package (currently limited to *zip* or *tar*).
-    The second parameter is *checks* and is an optional array of checks, which the user wants to executed as a part of
-    his IaC scan.
-    The IaC checks are selected by their unique names. If the user does not specify that field, all the enabled checks
-    are executed.
-    The API will warn you if there are any nonexistent, disabled or un-configured checks that you wanted to use.
-    After the scanning process the API will return results of all checks (their outputs and return codes).
-
-    **Example request**:
-
-    .. tabs::
-
-        .. code-tab:: bash
-
-            $ curl -X 'POST' 'http://127.0.0.1:8000/scan' -H 'Content-Type: multipart/form-data' -F 'iac=@scaling-example.zip' -F 'checks=bandit,ansible-lint'
-
-        .. code-tab:: python
-
-            import requests
-            URL = 'http://127.0.0.1:8000/scan'
-            multipart_form_data = {
-                'iac': ('scaling-example.zip', open('/path/to/scaling-example.zip', 'rb')),
-                'checks': (None, 'bandit,ansible-lint')
-            }
-            response = requests.put(URL, files=multipart_form_data)
-            print(response.json())
-
-    **Example response**:
-
-    .. sourcecode:: json
-
-        {
-          "bandit": {
-            "output": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None\n[main]\tINFO\trunning on Python 3.8.10\nRun started:2021-08-25 11:23:29.960356\n\nTest results:\n\tNo issues identified.\n\nCode scanned:\n\tTotal lines of code: 0\n\tTotal lines skipped (#nosec): 0\n\nRun metrics:\n\tTotal issues (by severity):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\n\tTotal issues (by confidence):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\nFiles skipped (0):\n",
-            "rc": 0
-          },
-          "ansible-lint": {
-            "output": "WARNING  Listing 6 violation(s) that are fatal\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:45: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:62: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\nYou can skip specific rules or tags by adding them to your configuration file:\n\u001b[2m# .ansible-lint\u001b[0m\n\u001b[94mwarn_list\u001b[0m:  \u001b[2m# or 'skip_list' to silence them completely\u001b[0m\n  - yaml  \u001b[2m# Violations reported by yamllint\u001b[0m\n\nFinished with \u001b[1;36m6\u001b[0m \u001b[1;35mfailure\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m, \u001b[1;36m0\u001b[0m \u001b[1;35mwarning\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m on \u001b[1;36m9\u001b[0m files.\n",
-            "rc": 2
-          }
-        }
-
-    :param string scan_response_type: JSON (default) or YAML scan response
-    :form iac: IaC file (currently limited to *zip* or *tar*)
-    :form checks: optional array of the selected checks
-    :statuscode 200: Successful Response
-    :statuscode 400: Bad Request
-    :statuscode 422: Validation Error
-
-.. Note:: All API endpoints try to use JSON responses.
-
 .. _IaC Scanner and check reference:
 
 ===========================
@@ -1051,6 +744,318 @@ SonarScanner
 .. Tip:: If you do not wish to supply your user token within the config file, pass it as a secret in the API.
 
 ------------------------------------------------------------------------------------------------------------------------
+
+.. _IaC Scan Runner REST API:
+
+========
+REST API
+========
+
+This section focuses on the **IaC Scan Runner REST API** service.
+
+.. _IaC Scan Runner REST API installation:
+
+Installation
+############
+
+You can run the REST API using a public `xscanner/runner`_ Docker image as follows:
+
+.. code-block:: bash
+
+    # run IaC Scan Runner REST API in a Docker container and
+    # navigate to localhost:8080/swagger or localhost:8080/redoc
+    docker run --name iac-scan-runner -p 8080:80 xscanner/runner
+
+.. Tip:: Other methods of running are also explained in `xlab-si/iac-scan-runner`_ GitHub repository.
+
+.. Note::
+
+    The Docker image is large because we use many different tools for scanning.
+    For the future releases. we will try to shrink it down as much as possible.
+
+.. _IaC Scan Runner REST API usage:
+
+Usage
+#####
+
+After the setup you will see that the `OpenAPI Specification`_ and interactive `Swagger UI`_ API documentation are
+available on ``/swagger``, whereas `ReDoc`_ generated API reference documentation is accessible on ``/redoc``.
+You can also retrieve an OpenAPI document that conforms to the `OpenAPI Specification`_ as JSON file on
+``/openapi.json`` or as YAML file on ``/openapi.yaml`` (or ``/openapi.yml``).
+
+The IaC Scan Runner API can be used to interact with the main IaC inspection component and initialize IaC scans.
+The API includes various IaC checks that can be filtered and configured.
+User can choose to execute all or just the selected checks as a part of one IaC scan.
+After the scanning process the API will return all the check results.
+
++-------------------------------------------+-----------------------------------+
+| REST API endpoint                         | Description                       |
++===========================================+===================================+
+| `/checks`_                                | Retrieve and filter checks        |
++-------------------------------------------+-----------------------------------+
+| `/checks/{check_name}/enable`_            | Enable check for running          |
++-------------------------------------------+-----------------------------------+
+| `/checks/{check_name}/disable`_           | Disable check for running         |
++-------------------------------------------+-----------------------------------+
+| `/checks/{check_name}/configure`_         | Configure check                   |
++-------------------------------------------+-----------------------------------+
+| `/scan`_                                  | Initiate IaC scan                 |
++-------------------------------------------+-----------------------------------+
+
+The API endpoints are further described below.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks:
+
+.. http:get:: /checks
+
+    This endpoint lets you retrieve and filter the supported IaC checks.
+    You can filter checks by their keynames (use the *keyword* request parameter) and find out whether they are already
+    enabled (set the *enabled* parameter) or configured (set the *configured* parameter).
+    Checks can also be filtered by their target entity (set the *target_entity_type* parameter) - here we have three
+    types of checks - IaC (they only check the code), component (they check IaC requirements and dependencies in order
+    to find vulnerabilities) and check that are both IaC and component.
+    Each IaC check in the API has its unique name so that it can be distinguished from other checks.
+    When no filter is specified, the endpoint lists all IaC checks.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'GET' 'http://127.0.0.1:8000/checks?keyword=Terraform&enabled=true'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks?keyword=Terraform&enabled=true'
+            response = requests.get(URL)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        [
+          {
+            "name": "tflint",
+            "description": "A Pluggable Terraform Linter",
+            "enabled": true,
+            "configured": true,
+            "target_entity_type": "IaC"
+          },
+          {
+            "name": "tfsec",
+            "description": "Security scanner for your Terraform code",
+            "enabled": true,
+            "configured": true,
+            "target_entity_type": "IaC"
+          },
+          {
+            "name": "terrascan",
+            "description": "Terrascan is a static code analyzer for IaC (defaults to scanning Terraform)",
+            "enabled": true,
+            "configured": true,
+            "target_entity_type": "IaC"
+          }
+        ]
+
+    :query string keyword: optional keyword from check name or description
+    :query boolean enabled: search for checks that are enabled or not
+    :query string configured: search for checks that are configured or not
+    :query string target_entity_type: search by target entity (one of ``IaC``, ``component``, ``IaC and component``)
+    :statuscode 200: Successful Response
+    :statuscode 404: Bad Request
+    :statuscode 422: Validation Error
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks/{check_name}/enable:
+
+.. http:put:: /checks/{check_name}/enable
+
+    IaC checks can be enabled (can be used for scanning) or disabled (cannot be used for scanning).
+    Most of the local checks are enabled by default and some of them that are advanced, take longer time or require
+    additional configuration are disabled and have to be enabled before the scanning.
+    This endpoint can be used to enable a specific IaC check (selected by the *check_name* parameter), which means that
+    it will become available for running within IaC scans.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/snyk/enable'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks/snyk/enable'
+            response = requests.put(URL)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        "Check: snyk is now enabled and available to use."
+
+    :param string check_name: check that you want to enable for running
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks/{check_name}/disable:
+
+.. http:put:: /checks/{check_name}/disable
+
+    This endpoint can be used to disable a specific IaC check (selected by the *check_name* parameter), which means
+    that it will become unavailable for running within IaC scans.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/pylint/disable'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks/pylint/enable'
+            response = requests.put(URL)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        "Check: pylint is now disabled and cannot be used."
+
+    :param string check_name: check that you want to disable for running
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/checks/{check_name}/configure:
+
+.. http:put:: /checks/{check_name}/configure
+
+    This endpoint is used to configure a specific IaC check (selected by the *check_name* parameter).
+    Most IaC checks do not need configuration as they already use their default settings.
+    However, some of them - especially the remote service checks (such as `Snyk`_) require to be configured before
+    using them within IaC scans.
+    Some checks will have to be enabled before they can be configured.
+    The configuration of IaC check takes two optional `multipart`_ request body parameters - *config_file* and *secret*.
+    The former (*config_file*) can be used to pass a check configuration file (which is supported by almost every
+    check) that is specific to every check and will override the default check settings.
+    The latter (*secret*) is meant for passing sensitive data such as passwords, API keys, tokens, etc.
+    These secrets are often used to configure the remote service checks - usually to authenticate the user via some
+    token that has been generated in the remote service user profile settings.
+    Some IaC checks support both the aforementioned request body parameters and some support one of them or none.
+    The API will warn you in case of any configuration problems.
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'PUT' 'http://127.0.0.1:8000/checks/sonar-scanner/configure' -H 'Content-Type: multipart/form-data' -F 'config_file=@sonar-project.properties;type=text/plain' -F 'secret=56bf-example-token-f007'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/checks/sonar-scanner/configure'
+            multipart_form_data = {
+                'config_file': ('sonar-project.properties', open('/path/to/sonar-project.properties', 'rb')),
+                'secret': (None, '56bf-example-token-f007')
+            }
+            response = requests.put(URL, files=multipart_form_data)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        "Check: sonar-scanner has been configured successfully."
+
+    :param string check_name: check that you want to configure before scanning
+    :form config_file: optional check configuration file
+    :form secret: optional secret for configuration (password, API token, etc.)
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+.. Warning:: Be careful not to expose your secrets directly in your IaC.
+
+------------------------------------------------------------------------------------------------------------------------
+
+.. _/scan:
+
+.. http:post:: /scan
+
+    This is the main endpoint that is used to scan the IaC and gather the results from the executed IaC checks.
+    The request body is treated as `multipart`_ (*multipart/form-data* type) and has two parameters.
+    The first one is *iac* and is required.
+    Here, the user passes his (compressed) IaC package (currently limited to *zip* or *tar*).
+    The second parameter is *checks* and is an optional array of checks, which the user wants to executed as a part of
+    his IaC scan.
+    The IaC checks are selected by their unique names. If the user does not specify that field, all the enabled checks
+    are executed.
+    The API will warn you if there are any nonexistent, disabled or un-configured checks that you wanted to use.
+    After the scanning process the API will return results of all checks (their outputs and return codes).
+
+    **Example request**:
+
+    .. tabs::
+
+        .. code-tab:: bash
+
+            $ curl -X 'POST' 'http://127.0.0.1:8000/scan' -H 'Content-Type: multipart/form-data' -F 'iac=@scaling-example.zip' -F 'checks=bandit,ansible-lint'
+
+        .. code-tab:: python
+
+            import requests
+            URL = 'http://127.0.0.1:8000/scan'
+            multipart_form_data = {
+                'iac': ('scaling-example.zip', open('/path/to/scaling-example.zip', 'rb')),
+                'checks': (None, 'bandit,ansible-lint')
+            }
+            response = requests.put(URL, files=multipart_form_data)
+            print(response.json())
+
+    **Example response**:
+
+    .. sourcecode:: json
+
+        {
+          "bandit": {
+            "output": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None\n[main]\tINFO\trunning on Python 3.8.10\nRun started:2021-08-25 11:23:29.960356\n\nTest results:\n\tNo issues identified.\n\nCode scanned:\n\tTotal lines of code: 0\n\tTotal lines skipped (#nosec): 0\n\nRun metrics:\n\tTotal issues (by severity):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\n\tTotal issues (by confidence):\n\t\tUndefined: 0\n\t\tLow: 0\n\t\tMedium: 0\n\t\tHigh: 0\nFiles skipped (0):\n",
+            "rc": 0
+          },
+          "ansible-lint": {
+            "output": "WARNING  Listing 6 violation(s) that are fatal\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:32: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside braces\u001b[0m \u001b[2;91m(braces)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:35: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:45: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\n\u001b[34mservice.yaml\u001b[0m:62: \u001b[91myaml\u001b[0m \u001b[2mtoo many spaces inside brackets\u001b[0m \u001b[2;91m(brackets)\u001b[0m\nYou can skip specific rules or tags by adding them to your configuration file:\n\u001b[2m# .ansible-lint\u001b[0m\n\u001b[94mwarn_list\u001b[0m:  \u001b[2m# or 'skip_list' to silence them completely\u001b[0m\n  - yaml  \u001b[2m# Violations reported by yamllint\u001b[0m\n\nFinished with \u001b[1;36m6\u001b[0m \u001b[1;35mfailure\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m, \u001b[1;36m0\u001b[0m \u001b[1;35mwarning\u001b[0m\u001b[1m(\u001b[0ms\u001b[1m)\u001b[0m on \u001b[1;36m9\u001b[0m files.\n",
+            "rc": 2
+          }
+        }
+
+    :param string scan_response_type: JSON (default) or YAML scan response
+    :form iac: IaC file (currently limited to *zip* or *tar*)
+    :form checks: optional array of the selected checks
+    :statuscode 200: Successful Response
+    :statuscode 400: Bad Request
+    :statuscode 422: Validation Error
+
+.. Note:: All API endpoints try to use JSON responses.
 
 .. _IaC Scan Runner CLI:
 
