@@ -67,6 +67,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#htmlhint">HTMLHint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stylelint">stylelint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#checkstyle">Checkstyle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cloc">cloc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snyk">Snyk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sonarscanner">SonarScanner</a></li>
 </ul>
@@ -244,12 +245,17 @@ supplied IaC go through multiple checks.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#snyk">Snyk</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#cloc">cloc</a></p></td>
+<td><p>Multiple components</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#snyk">Snyk</a></p></td>
 <td><p>Multiple components</p></td>
 <td><p>no</p></td>
 <td><p>yes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sonarscanner">SonarScanner</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sonarscanner">SonarScanner</a></p></td>
 <td><p>Multiple components</p></td>
 <td><p>no</p></td>
 <td><p>yes</p></td>
@@ -1006,8 +1012,45 @@ You can also skip this configuration and put the configuration file called to th
 </div>
 <hr class="docutils" />
 </div>
+<div class="section" id="cloc">
+<span id="id22"></span><h3>cloc<a class="headerlink" href="#cloc" title="Permalink to this headline"></a></h3>
+<p><strong>cloc</strong> counts blank lines, comment lines, and physical lines of source code in many programming languages (see
+<a class="reference external" href="https://github.com/AlDanial/cloc">cloc check</a>).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Check ID (from the API)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cloc</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Enabled (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configured (by default)</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://github.com/AlDanial/cloc/blob/master/README.md">cloc docs</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-configuration-options-for-checks-check-name-configure-api-endpoint admonition">
+<p class="admonition-title">Configuration options for <a class="reference internal" href="#checks-check-name-configure">/checks/{check_name}/configure</a> API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Config file</dt>
+<dd class="field-odd"><p>Accepts an optional .txt configuration file (see <a class="reference external" href="https://github.com/AlDanial/cloc/blob/master/README.md#optionstxt-configuration-file-">cloc config</a>).</p>
+</dd>
+<dt class="field-even">Secret</dt>
+<dd class="field-even"><p>Not supported.</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+</div>
 <div class="section" id="snyk">
-<span id="id22"></span><h3>Snyk<a class="headerlink" href="#snyk" title="Permalink to this headline"></a></h3>
+<span id="id23"></span><h3>Snyk<a class="headerlink" href="#snyk" title="Permalink to this headline"></a></h3>
 <p><strong>Snyk</strong> helps you find, fix and monitor known vulnerabilities in open source (see <a class="reference external" href="https://github.com/snyk/snyk">Snyk check</a>).</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1044,7 +1087,7 @@ settings and requires user to set up Snyk account (for more info see <a class="r
 <hr class="docutils" />
 </div>
 <div class="section" id="sonarscanner">
-<span id="id23"></span><h3>SonarScanner<a class="headerlink" href="#sonarscanner" title="Permalink to this headline"></a></h3>
+<span id="id24"></span><h3>SonarScanner<a class="headerlink" href="#sonarscanner" title="Permalink to this headline"></a></h3>
 <p><strong>SonarScanner</strong> is the official scanner used to run code analysis on <a class="reference external" href="https://www.sonarqube.org/">SonarQube</a> and <a class="reference external" href="https://sonarcloud.io/">SonarCloud</a>
 (see <a class="reference external" href="https://github.com/SonarSource/sonar-scanner-cli/">SonarScanner check</a>).</p>
 <table class="docutils align-default">
@@ -1445,7 +1488,7 @@ In Ubuntu, however, we might need to run the following commands:</p>
 </div>
 </div>
 <div class="section" id="iac-scan-runner-cli-installation">
-<span id="id24"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
+<span id="id25"></span><h3>Installation<a class="headerlink" href="#iac-scan-runner-cli-installation" title="Permalink to this headline"></a></h3>
 <p>IaC Scan Runner CLI is distributed as Python <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">iac-scan-runner</a> package that is regularly published on <a class="reference external" href="https://pypi.org/project/iac-scan-runner/">PyPI</a>.
 The simplest way to test <code class="docutils literal notranslate"><span class="pre">iac-scan-runner</span></code> is to install it into virtual environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir ~/iac-scan-runner <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/iac-scan-runner

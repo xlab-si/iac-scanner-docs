@@ -62,6 +62,8 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Checkstyle`_                 | Java                       | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
+| `cloc`_                       | Multiple components        | yes                        | no                         |
++-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Snyk`_                       | Multiple components        | no                         | yes                        |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `SonarScanner`_               | Multiple components        | no                         | yes                        |
@@ -679,6 +681,36 @@ Checkstyle
 
 ------------------------------------------------------------------------------------------------------------------------
 
+.. _cloc:
+
+cloc
+####
+
+**cloc** counts blank lines, comment lines, and physical lines of source code in many programming languages (see
+`cloc check`_).
+
++-------------------------+---------------------------------+
+| Check ID (from the API) | ``cloc``                        |
++-------------------------+---------------------------------+
+| Enabled (by default)    | yes                             |
++-------------------------+---------------------------------+
+| Configured (by default) | yes                             |
++-------------------------+---------------------------------+
+| Documentation           | `cloc docs`_                    |
++-------------------------+---------------------------------+
+
+.. admonition:: Configuration options for `/checks/{check_name}/configure`_ API endpoint
+
+    :Config file:
+
+        Accepts an optional .txt configuration file (see `cloc config`_).
+
+    :Secret:
+
+        Not supported.
+
+------------------------------------------------------------------------------------------------------------------------
+
 .. _Snyk:
 
 Snyk
@@ -1200,6 +1232,9 @@ Commands
 .. _Checkstyle check: https://github.com/checkstyle/checkstyle/
 .. _Checkstyle docs: https://checkstyle.org/
 .. _Checkstyle config: https://checkstyle.org/config.html
+.. _cloc check: https://github.com/AlDanial/cloc
+.. _cloc docs: https://github.com/AlDanial/cloc/blob/master/README.md
+.. _cloc config: https://github.com/AlDanial/cloc/blob/master/README.md#optionstxt-configuration-file-
 .. _Snyk check: https://github.com/snyk/snyk
 .. _Snyk docs: https://support.snyk.io/hc/en-us
 .. _Snyk API token: https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account
