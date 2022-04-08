@@ -22,7 +22,7 @@ IaC Scan Runner currently supports the following *IaC checks* that can be execut
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | IaC Check                     | Target IaC entity          | Enabled (by default)       | Needs configuration        |
 +===============================+============================+============================+============================+
-| `xOpera TOSCA validation`_    | TOSCA                      | yes                        | no                         |
+| `xOpera TOSCA parser`_        | TOSCA                      | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
 | `Ansible Lint`_               | Ansible                    | yes                        | no                         |
 +-------------------------------+----------------------------+----------------------------+----------------------------+
@@ -73,17 +73,18 @@ The following subsections explain the necessary API actions for each check.
 
 ------------------------------------------------------------------------------------------------------------------------
 
-.. _xOpera TOSCA validation:
+.. _xOpera TOSCA parser:
 
 xOpera TOSCA validation
 #######################
 
-**xOpera** project that includes `xOpera TOSCA orchestrator`_ called ``opera`` - a lightweight TOSCA orchestrator that
-comes with CLI that is (apart from all orchestration actions) able to parse and validate `OASIS TOSCA`_ templates and
-CSAR files (see `xOpera validate check`_).
+**xOpera** is an orchestration project that includes `xOpera TOSCA orchestrator`_ called ``opera`` - a lightweight
+TOSCA orchestrator, which uses a separate component called `xOpera TOSCA YAML parser`_. This ``opera-tosca-parser``
+Python library (also comes with CLI) is able to parse and validate `OASIS TOSCA`_ templates and CSAR files
+(also see `xOpera validate check`_).
 
 +-------------------------+----------------------------+
-| Check ID (from the API) | ``opera``                  |
+| Check ID (from the API) | ``opera-tosca-parser``     |
 +-------------------------+----------------------------+
 | Enabled (by default)    | yes                        |
 +-------------------------+----------------------------+
@@ -1172,6 +1173,7 @@ Commands
 .. _ReDoc: https://redoc.ly/redoc/
 .. _multipart: https://swagger.io/docs/specification/describing-request-body/multipart-requests/
 .. _xOpera TOSCA orchestrator: https://github.com/xlab-si/xopera-opera
+.. _xOpera TOSCA YAML parser: https://github.com/xlab-si/xopera-tosca-parser
 .. _OASIS TOSCA: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=tosca
 .. _xOpera validate check: https://xlab-si.github.io/xopera-docs/cli.html#validate
 .. _xOpera docs: https://xlab-si.github.io/xopera-docs/
