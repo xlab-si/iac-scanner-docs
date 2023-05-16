@@ -1,7 +1,7 @@
 # IaC Scanner documentation
 This repository holds the documentation for the [IaC Scanner].
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xlab-si/iac-scanner-docs/Build%20and%20publish)](https://github.com/xlab-si/iac-scanner-docs/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/xlab-si/iac-scanner-docs/ci_cd.yml?branch=main)](https://github.com/xlab-si/iac-scanner-docs/actions)
 [![GitHub deployments](https://img.shields.io/github/deployments/xlab-si/iac-scanner-docs/github-pages?label=gh-pages)](https://github.com/xlab-si/iac-scanner-docs/deployments)
 [![Docker Image Version (latest by date)](https://img.shields.io/docker/v/xscanner/docs?color=blue&label=docker)](https://hub.docker.com/r/xscanner/docs)
 
